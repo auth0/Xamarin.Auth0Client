@@ -107,7 +107,7 @@ namespace Auth0.SDK
 			OnSucceeded ((string)json["name"], accountProperties);
 		}
 
-		public static byte[] Base64UrlDecode(string input)
+		private static byte[] Base64UrlDecode(string input)
 		{
 			var output = input;
 			output = output.Replace('-', '+'); // 62nd char of encoding
