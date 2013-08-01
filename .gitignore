@@ -1,7 +1,7 @@
 #Xamarin Component build script
 buildPackage
 xpkg/
-*.xam/
+*.xam
 *.userprefs
 Components/
 
