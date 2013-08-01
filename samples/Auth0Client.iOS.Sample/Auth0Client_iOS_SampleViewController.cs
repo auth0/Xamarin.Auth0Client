@@ -31,6 +31,17 @@ namespace Auth0Client.iOS.Sample
 			// Return true for supported orientations
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
+
+		partial void loginWithWidgetButtonClick (NSObject sender)
+		{
+			this.txtAccessToken.Text = "access_token from widget";
+			this.txtIdToken.Text = "id_token from widget";
+		}
+
+		partial void loginWithConnectionButtonClick (NSObject sender)
+		{
+			this.txtAccessToken.Text = "access_token from fabrikam";
+			this.txtIdToken.Text = "id_token from fabrikam";
+		}
 	}
 }
-
