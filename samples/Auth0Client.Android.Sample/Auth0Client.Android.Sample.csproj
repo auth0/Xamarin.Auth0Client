@@ -60,7 +60,7 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Auth0Client.Android\Auth0Client.Android.csproj">
+    <ProjectReference Include="..\..\Auth0Client.Android\Auth0Client.Android.csproj">
       <Project>{81864EA2-C020-4B1F-82E5-0634DD071084}</Project>
       <Name>Auth0Client.Android</Name>
     </ProjectReference>
