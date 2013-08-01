@@ -99,4 +99,10 @@
     <InterfaceDefinition Include="Auth0Client_iOS_SampleViewController.xib" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auth0Client.iOS\Auth0Client.iOS.csproj">
+      <Project>{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}</Project>
+      <Name>Auth0Client.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
