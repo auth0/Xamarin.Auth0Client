@@ -1,7 +1,7 @@
 ## 1. Create and configure an Auth0Client
 
 ```csharp
-using Auth0.SDK.;
+using Auth0.SDK;
 ...
 var auth0 = new Auth0Client( "A Title", "{tenant}", "{Your ClientId in Auth0}", "http://localhost/client");
 ```
