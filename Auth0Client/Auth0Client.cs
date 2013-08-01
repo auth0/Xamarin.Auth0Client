@@ -100,11 +100,29 @@ namespace Auth0.SDK
 			//Get the JWT
 			var jwt = accountProperties["id_token"].Split ('.')[1];
 
-			var decoded = System.Text.Encoding.Default.GetString (System.Convert.FromBase64String(jwt));
+			var decoded = System.Text.Encoding.Default.GetString (Base64UrlDecode(jwt));
 
 			var json = Newtonsoft.Json.Linq.JObject.Parse (decoded);
 
 			OnSucceeded ((string)json["name"], accountProperties);
+		}
+
+		public static byte[] Base64UrlDecode(string input)
+		{
+			var output = input;
+			output = output.Replace('-', '+'); // 62nd char of encoding
+			output = output.Replace('_', '/'); // 63rd char of encoding
+
+			switch (output.Length % 4) // Pad with trailing '='s
+			{
+				case 0: break; // No pad chars in this case
+				case 2: output += "=="; break; // Two pad chars
+				case 3: output += "="; break; // One pad char
+				default: throw new System.Exception("Illegal base64url string!");
+			}
+
+			var converted = Convert.FromBase64String(output); // Standard base64 decoder
+			return converted;
 		}
 	}
 }
