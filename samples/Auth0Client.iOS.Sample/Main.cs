@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace Sample
+namespace Auth0Client.iOS.Sample
 {
 	public class Application
 	{

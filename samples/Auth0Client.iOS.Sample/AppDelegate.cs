@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
-namespace Sample
+namespace Auth0Client.iOS.Sample
 {
 	// The UIApplicationDelegate for the application. This class is responsible for launching the 
 	// User Interface of the application, as well as listening (and optionally responding) to 
@@ -15,8 +14,7 @@ namespace Sample
 	{
 		// class-level declarations
 		UIWindow window;
-		SampleViewController viewController;
-
+		Auth0Client_iOS_SampleViewController viewController;
 		//
 		// This method is invoked when the application has loaded and is ready to run. In this 
 		// method you should instantiate the window, load the UI into it and then make the window
@@ -28,7 +26,7 @@ namespace Sample
 		{
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
 			
-			viewController = new SampleViewController ();
+			viewController = new Auth0Client_iOS_SampleViewController ();
 			window.RootViewController = viewController;
 			window.MakeKeyAndVisible ();
 			
