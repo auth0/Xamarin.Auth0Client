@@ -1,9 +1,26 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client", "Auth0Client\Auth0Client.csproj", "{1AD89FC1-4858-4279-A621-66D89588E461}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client.iOS", "Auth0Client.iOS\Auth0Client.iOS.csproj", "{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1AD89FC1-4858-4279-A621-66D89588E461}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1AD89FC1-4858-4279-A621-66D89588E461}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1AD89FC1-4858-4279-A621-66D89588E461}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1AD89FC1-4858-4279-A621-66D89588E461}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = Auth0Client\Auth0Client.csproj
 	EndGlobalSection
 EndGlobal
