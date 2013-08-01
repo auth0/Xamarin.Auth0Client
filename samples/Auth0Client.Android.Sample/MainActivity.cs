@@ -1,20 +1,19 @@
 using System;
 using Android.App;
 using Android.Content;
+using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Android.OS;
 
 namespace Auth0Client.Android.Sample
 {
 	[Activity (Label = "Auth0Client.Android.Sample", MainLauncher = true)]
 	public class Activity1 : Activity
 	{
-		// You can obtain {tenant}, {clientID} and {callback} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
+		// You can obtain {tenant} and {clientID} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
 		private const string Tenant = "{tenant}";
 		private const string ClientID = "{clientID}";
-		private const string Callback = "{callback}";
 
 		protected override void OnCreate (Bundle bundle)
 		{
@@ -32,8 +31,7 @@ namespace Auth0Client.Android.Sample
 				var client = new Auth0.SDK.Auth0Client (
 					"Auth0", 						// title
 					Tenant, 						// tenant
-					ClientID, 						// clientID
-					Callback);						// callback
+					ClientID);						// clientID
 
 				this.wireLogin(client);
 			};
@@ -46,8 +44,7 @@ namespace Auth0Client.Android.Sample
 					"Auth0", 						// title
 					Tenant, 						// tenant
 					ClientID, 						// clientID
-					"google-oauth2",				// connection name
-					Callback);						// callback
+					"google-oauth2");				// connection name
 
 				this.wireLogin(client);
 			};
