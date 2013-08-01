@@ -39,6 +39,7 @@ namespace Auth0Client.iOS.Sample
 
 		partial void loginWithWidgetButtonClick (NSObject sender)
 		{
+			// This will show all connections enabled in Auth0, and let the user choose the identity provider
 			var client = new Auth0.SDK.Auth0Client(
 				"Auth0", 						// title
 				Tenant, 						// tenant
@@ -50,6 +51,7 @@ namespace Auth0Client.iOS.Sample
 
 		partial void loginWithConnectionButtonClick (NSObject sender)
 		{
+			// This uses a specific connection: google-oauth2
 			var client = new Auth0.SDK.Auth0Client(
 				"Auth0", 						// title
 				Tenant, 						// tenant
@@ -70,32 +72,34 @@ namespace Auth0Client.iOS.Sample
 				if (e.IsAuthenticated) 
 				{
 					// All the information gathered from a successful authentication is available in e.Account
-					this.ShowResul(
+					this.ShowResult(
 						accessToken: (string)e.Account.Properties["access_token"],
 						idToken: (string)e.Account.Properties["id_token"],
-						userName: string.Format("Hi {0}!", e.Account.Username));
+						userName: e.Account.Username);
 				} 
 				else 
 				{
 					// The user cancelled
-					this.ShowResul(error: "User cancelled");
+					this.ShowResult(error: "User cancelled");
 				}
 			};
 
 			client.Error += (object sender, Xamarin.Auth.AuthenticatorErrorEventArgs e) => 
 			{
-				this.ShowResul(error: e.Message);
+				this.ShowResult(error: e.Message);
 			};
 
 			// We're ready to present the login UI
 			PresentViewController(client.GetUI(), true, null);
 		}
 
-		private void ShowResul(string accessToken = "", string idToken = "", string userName = "", string error = "")
+		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
 		{
 			this.txtAccessToken.Text = accessToken;
 			this.txtIdToken.Text = idToken;
-			this.lblUserName.Text = string.IsNullOrEmpty(error) ? userName : "Error: " + error;
+			this.lblUserName.Text = 
+				string.IsNullOrEmpty(error) ? string.Format("Hi {0}!", userName) : "Error: " + error;
+
 			this.lblUserName.SizeToFit ();
 		}
 	}
