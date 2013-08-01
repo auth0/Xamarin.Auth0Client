@@ -88,7 +88,7 @@ namespace Auth0Client.iOS.Sample
 			};
 
 			// We're ready to present the login UI
-			PresentViewController (client.GetUI (), true, null);
+			PresentViewController(client.GetUI(), true, null);
 		}
 
 		private void ShowResul(string accessToken = "", string idToken = "", string userName = "", string error = "")
