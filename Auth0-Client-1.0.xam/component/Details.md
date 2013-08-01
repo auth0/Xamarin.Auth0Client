@@ -1,1 +1,0 @@
-# Auth0-Client-1.0.xam details
