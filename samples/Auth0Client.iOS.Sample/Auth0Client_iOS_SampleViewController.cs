@@ -67,9 +67,6 @@ namespace Auth0Client.iOS.Sample
 		{
 			client.Completed += (object sender, Xamarin.Auth.AuthenticatorCompletedEventArgs e) => 
 			{
-				// We presented the UI, so it's up to us to dimiss it on iOS
-				DismissViewController (true, null);
-
 				if (e.IsAuthenticated) 
 				{
 					// All the information gathered from a successful authentication is available in e.Account
@@ -91,11 +88,14 @@ namespace Auth0Client.iOS.Sample
 			};
 
 			// We're ready to present the login UI
-			PresentViewController(client.GetUI(), true, null);
+			this.PresentViewController(client.GetUI(), true, null);
 		}
 
 		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
 		{
+			// We presented the UI, so it's up to us to dimiss it on iOS
+			this.DismissViewController (true, null);
+
 			this.txtAccessToken.Text = accessToken;
 			this.txtIdToken.Text = idToken;
 			this.lblUserName.Text = 
