@@ -33,7 +33,6 @@
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
     <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
-    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -67,7 +66,7 @@
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
-      <InstallationInProgress>True</InstallationInProgress>
+      <InstallationInProgress>False</InstallationInProgress>
       <Version>1.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
