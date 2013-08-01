@@ -8,8 +8,8 @@ namespace Auth0Client.iOS.Sample
 	public partial class Auth0Client_iOS_SampleViewController : UIViewController
 	{
 		// You can obtain {tenant} and {clientID} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
-		private const string Tenant = "iaco2";
-		private const string ClientID = "XviE9dLlREjXZduIzTqtsGsiZELjls8z";
+		private const string Tenant = "{tenant}";
+		private const string ClientID = "{clientID}";
 
 		public Auth0Client_iOS_SampleViewController () : base ("Auth0Client_iOS_SampleViewController", null)
 		{
