@@ -1,6 +1,7 @@
 #Xamarin Component build script
 buildPackage
 xpkg/
+*.xam/
 
 # Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
 [Bb]in/
@@ -103,6 +104,7 @@ ClientBin
 [Ss]tyle[Cc]op.*
 ~$*
 *.dbmdl
+.DS_Store
 Generated_Code #added for RIA/Silverlight projects
 
 # Backup & report files from converting an old project file to a newer
