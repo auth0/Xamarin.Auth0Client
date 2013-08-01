@@ -7,10 +7,9 @@ namespace Auth0Client.iOS.Sample
 {
 	public partial class Auth0Client_iOS_SampleViewController : UIViewController
 	{
-		// You can obtain {tenant}, {clientID} and {callback} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
+		// You can obtain {tenant} and {clientID} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
 		private const string Tenant = "iaco2";
 		private const string ClientID = "XviE9dLlREjXZduIzTqtsGsiZELjls8z";
-		private const string Callback = "https://localhost/client";
 
 		public Auth0Client_iOS_SampleViewController () : base ("Auth0Client_iOS_SampleViewController", null)
 		{
@@ -44,8 +43,7 @@ namespace Auth0Client.iOS.Sample
 			var client = new Auth0.SDK.Auth0Client(
 				"Auth0", 						// title
 				Tenant, 						// tenant
-				ClientID, 						// clientID
-				Callback);						// callback
+				ClientID); 						// clientID
 
 			this.wireLogin(client);
 		}
@@ -57,8 +55,7 @@ namespace Auth0Client.iOS.Sample
 				"Auth0", 						// title
 				Tenant, 						// tenant
 				ClientID, 						// clientID
-				"google-oauth2",				// connection name
-				Callback);						// callback
+				"google-oauth2");				// connection name
 
 			this.wireLogin(client);
 		}

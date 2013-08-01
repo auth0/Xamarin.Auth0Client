@@ -12,6 +12,7 @@ namespace Auth0.SDK
 	{
 		static string AuthorizeUrl = "https://{0}.auth0.com/authorize?client_id={1}&scope=openid%20profile&redirect_uri={2}&response_type=token&connection={3}";
 		static string LoginWidgetUrl = "https://{0}.auth0.com/login/?client={1}&scope=openid%20profile&redirect_uri={2}&response_type=token";
+		static string DefaultCallback = "https://{0}.auth0.com/mobile";
 
 		string state; 
 		Uri startUrl;
@@ -24,8 +25,8 @@ namespace Auth0.SDK
 		/// <param name="clientId">The Client Id for the application defined in Auth0</param>
 		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider</param>
 		/// <param name="callbackurl">The redirect_uri used to detect the end of the authentication transaction</param>
-		public Auth0Client (string title, string tenant, string clientId, string connection, string callbackurl ) 
-			: this( title, string.Format(AuthorizeUrl, tenant, clientId, Uri.EscapeDataString (callbackurl), connection), callbackurl)
+		public Auth0Client (string title, string tenant, string clientId, string connection, Uri callbackurl = null) 
+			: this( title, string.Format(AuthorizeUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant)), connection), ValidateCallback(callbackurl, tenant))
 		{
 		}
 
@@ -36,10 +37,9 @@ namespace Auth0.SDK
 		/// <param name="tenant">Your tenant in Auth0 (usually {tenant}.auth0.com</param>
 		/// <param name="clientId">The Client Id for the application defined in Auth0</param>
 		/// <param name="callbackurl">The redirect_uri used to detect the end of the authentication transaction</param>
-		public Auth0Client (string title, string tenant, string clientId, string callbackurl )
-			: this( title, string.Format(LoginWidgetUrl, tenant, clientId, Uri.EscapeDataString (callbackurl)), callbackurl)
+		public Auth0Client (string title, string tenant, string clientId, Uri callbackurl = null)
+			: this( title, string.Format(LoginWidgetUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant))), ValidateCallback(callbackurl, tenant))
 		{
-
 		}
 	
 		private Auth0Client(string title, string startUri, string callback )
@@ -123,6 +123,12 @@ namespace Auth0.SDK
 
 			var converted = Convert.FromBase64String(output); // Standard base64 decoder
 			return converted;
+		}
+
+		private static string ValidateCallback(Uri callbackUrl, string tenant)
+		{
+			return callbackUrl == null ? 
+				string.Format(DefaultCallback, tenant) : callbackUrl.AbsoluteUri;
 		}
 	}
 }
