@@ -12,6 +12,9 @@ namespace Auth0Client.iOS.Sample
 	partial class Auth0Client_iOS_SampleViewController
 	{
 		[Outlet]
+		MonoTouch.UIKit.UILabel lblUserName { get; set; }
+
+		[Outlet]
 		MonoTouch.UIKit.UITextField txtAccessToken { get; set; }
 
 		[Outlet]
@@ -25,6 +28,11 @@ namespace Auth0Client.iOS.Sample
 		
 		void ReleaseDesignerOutlets ()
 		{
+			if (lblUserName != null) {
+				lblUserName.Dispose ();
+				lblUserName = null;
+			}
+
 			if (txtAccessToken != null) {
 				txtAccessToken.Dispose ();
 				txtAccessToken = null;
