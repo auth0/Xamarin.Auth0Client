@@ -3,7 +3,7 @@
 ```csharp
 using Auth0.SDK;
 ...
-var auth0 = new Auth0Client( "A Title", "{tenant}", "{Your ClientId in Auth0}", "http://localhost/client");
+var auth0 = new Auth0Client( "A Title", "{tenant}", "{Your ClientId in Auth0}");
 ```
 
 > You can obtain {tenant} and {clientId} from your settings page in the [Auth0 Dashboard](https://app.auth0.com/#/settings).
@@ -41,7 +41,6 @@ The `GetUI` method returns `UINavigationControllers` on iOS, and `Intents` on An
 StartActivity (auth.GetUI (this));
 ```
 It's that easy!
-
 
 ## 3. Retrieve authentication properties
 
