@@ -5,6 +5,8 @@ using Android.OS;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Auth0.SDK;
+using Newtonsoft.Json.Linq;
 
 namespace Auth0Client.Android.Sample
 {
@@ -59,7 +61,7 @@ namespace Auth0Client.Android.Sample
 					// All the information gathered from a successful authentication is available in e.Account
 					this.ShowResult(
 						idToken: (string)e.Account.Properties["id_token"],
-						userName: e.Account.Username);
+						userName: (string)e.Account.GetProfile()["name"]);
 				}
 				else
 				{
