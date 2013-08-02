@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json.Linq;
 using Xamarin.Auth;
 
 namespace Auth0.SDK
@@ -97,38 +99,50 @@ namespace Auth0.SDK
 
 		protected virtual void OnRetrievedAccountProperties (IDictionary<string, string> accountProperties)
 		{
-			//Get the JWT
-			var jwt = accountProperties["id_token"].Split ('.')[1];
+			var account = new Account (string.Empty, accountProperties);
+			var profile = account.GetProfile();
+			account.Username = (string)profile["name"];
 
-			var decoded = System.Text.Encoding.Default.GetString (Base64UrlDecode(jwt));
-
-			var json = Newtonsoft.Json.Linq.JObject.Parse (decoded);
-
-			OnSucceeded ((string)json["name"], accountProperties);
-		}
-
-		private static byte[] Base64UrlDecode(string input)
-		{
-			var output = input;
-			output = output.Replace('-', '+'); // 62nd char of encoding
-			output = output.Replace('_', '/'); // 63rd char of encoding
-
-			switch (output.Length % 4) // Pad with trailing '='s
-			{
-				case 0: break; // No pad chars in this case
-				case 2: output += "=="; break; // Two pad chars
-				case 3: output += "="; break; // One pad char
-				default: throw new System.Exception("Illegal base64url string!");
-			}
-
-			var converted = Convert.FromBase64String(output); // Standard base64 decoder
-			return converted;
+			OnSucceeded(account);
 		}
 
 		private static string ValidateCallback(Uri callbackUrl, string tenant)
 		{
 			return callbackUrl == null ? 
 				string.Format(DefaultCallback, tenant) : callbackUrl.AbsoluteUri;
+		}
+	}
+
+	public static class Extensions
+	{
+		public static JObject GetProfile(this Account account)
+		{
+			if (!account.Properties.ContainsKey ("id_token")) 
+			{
+				return new JObject();
+			}
+
+			var jwt = account.Properties["id_token"].Split ('.')[1];
+			var decoded = Encoding.Default.GetString(jwt.Base64UrlDecode());
+
+			return JObject.Parse(decoded);
+		}
+
+		public static byte[] Base64UrlDecode(this string input)
+		{
+			var output = input;
+			output = output.Replace('-', '+'); 	// 62nd char of encoding
+			output = output.Replace('_', '/'); 	// 63rd char of encoding
+
+			switch (output.Length % 4) 			// Pad with trailing '='s
+			{
+				case 0: break; 					// No pad chars in this case
+				case 2: output += "=="; break; 	// Two pad chars
+				case 3: output += "="; break; 	// One pad char
+				default: throw new System.InvalidOperationException("Illegal base64url string!");
+			}
+
+			return Convert.FromBase64String(output); // Standard base64 decoder
 		}
 	}
 }

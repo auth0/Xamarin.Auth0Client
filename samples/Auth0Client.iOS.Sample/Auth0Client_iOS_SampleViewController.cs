@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using Auth0.SDK;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
@@ -70,8 +71,8 @@ namespace Auth0Client.iOS.Sample
 					this.ShowResult(
 						accessToken: (string)e.Account.Properties["access_token"],
 						idToken: (string)e.Account.Properties["id_token"],
-						userName: e.Account.Username);
-				} 
+						userName: (string)e.Account.GetProfile()["name"]);
+				}
 				else 
 				{
 					// The user cancelled
