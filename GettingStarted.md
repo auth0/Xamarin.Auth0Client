@@ -1,11 +1,27 @@
-This tutorial explains how to integrate [Auth0](http://auth0.com) with a Xamarin application (iOS or Android). `Xamarin.Auth0Client` helps you authenticate users with any [Auth0 supported identity provider](https://docs.auth0.com/identityproviders), via the OpenId Connect protocol (built on top of OAuth2). The library is cross-platform, so once you learn it on iOS, you're all set on Android.
+This tutorial explains how to integrate [Auth0](http://developers.auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
+
+* Adding authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter** or more enterprise like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider** out there. 
+* Adding **username/password databases**
+* Adding support for **[link different accounts](https://docs.auth0.com/link-accounts)** to the same user
+* Support for generating signed Json Web Tokens to call your APIs and **flow the user identity** securely.
+* Support for integrating with **Windows Azure Mobile Services backends**.
+
+The library is cross-platform, so once you learn it on iOS, you're all set on Android.
+
+## Create a free account in Auth0
+
+1. Go to [Auth0](http://developers.auth0.com) and click Sign Up.
+2. Use Google, GitHub or Microsoft Account to login.
+3. Create a new Xamarin Application
 
 ## Triggering the login manually or integrating the Auth0 widget
 
-There are two options to fire a login: 
+There are two options to do the integration: 
 
-1. Using the [Auth0 Widget](https://docs.auth0.com/login-widget)
-2. Creating your own UI
+1. Using the [Auth0 Login Widget](https://docs.auth0.com/login-widget) inside a Web View (this is like plug and play).
+2. Creating your own UI (more work but you control the UI)
+
+To start with, we'd recommend using the widget. Anyway, changes to do your own UI are minimum. Here is a snippet of code to copy paste. 
 
 ```csharp
 using Auth0.SDK;
@@ -18,7 +34,7 @@ var auth0 = new Auth0Client(
 // Attach to Completed event
 auth.Completed += (sender, eventArgs) => {
 	// We presented the UI, so it's up to us to dimiss it on iOS (ignore this line on Android)
-	DismissViewController (true, null);
+	// DismissViewController (true, null);
 	
 	if (eventArgs.IsAuthenticated) {
 		// Use **eventArgs.Account** to do wonderful things
