@@ -12,10 +12,10 @@ using Auth0.SDK;
 
 var auth0 = new Auth0Client(
 	"Login", 
-	"{tenant}", 
+	"{Your Auth0 Subdomain}", 
 	"{Your ClientId in Auth0}");
 
-// attach to Completed event
+// Attach to Completed event
 auth.Completed += (sender, eventArgs) => {
 	// We presented the UI, so it's up to us to dimiss it on iOS (ignore this line on Android)
 	DismissViewController (true, null);
@@ -37,7 +37,7 @@ Intents intent = auth0.GetUI(this);
 StartActivityForResult(intent, 42);
 ```
 
-> You can obtain {tenant} and {clientId} from your settings page in the Auth0 Dashboard
+> You can obtain {subdomain} and {clientId} from your settings page in the Auth0 Dashboard
 
 > `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
@@ -52,7 +52,7 @@ using Auth0.SDK;
 // ...
 var auth = new Auth0Client (
 	"Login", 
-	"{tenant}", 
+	"{Your Auth0 Subdomain}", 
 	"{Your ClientId in Auth0}",
 	"google-oauth2"); // connection name here
 ```
