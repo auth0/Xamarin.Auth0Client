@@ -1,18 +1,20 @@
 using System;
 using System.Drawing;
 using Auth0.SDK;
+using MonoTouch.Dialog;
 using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 
 namespace Auth0Client.iOS.Sample
 {
-	public partial class Auth0Client_iOS_SampleViewController : UIViewController
+	public partial class Auth0Client_iOS_SampleViewController : DialogViewController
 	{
-		// You can obtain {tenant} and {clientID} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
-		private const string Tenant = "{tenant}";
-		private const string ClientID = "{clientID}";
+		// You can obtain {tenant}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
+		private const string Tenant = "iaco2";
+		private const string ClientID = "XviE9dLlREjXZduIzTqtsGsiZELjls8z";
+		private const string ClientSecret = "g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy";
 
-		public Auth0Client_iOS_SampleViewController () : base ("Auth0Client_iOS_SampleViewController", null)
+		public Auth0Client_iOS_SampleViewController (RootElement root) : base(root)
 		{
 		}
 
@@ -29,7 +31,7 @@ namespace Auth0Client.iOS.Sample
 			base.ViewDidLoad ();
 			
 			// Perform any additional setup after loading the view, typically from a nib.
-			this.lblUserName.Text = string.Empty;
+			this.Initialize ();
 		}
 
 		public override bool ShouldAutorotateToInterfaceOrientation (UIInterfaceOrientation toInterfaceOrientation)
@@ -38,7 +40,7 @@ namespace Auth0Client.iOS.Sample
 			return (toInterfaceOrientation != UIInterfaceOrientation.PortraitUpsideDown);
 		}
 
-		partial void loginWithWidgetButtonClick (NSObject sender)
+		private void LoginWithWidgetButtonClick ()
 		{
 			// This will show all connections enabled in Auth0, and let the user choose the identity provider
 			var client = new Auth0.SDK.Auth0Client(
@@ -46,10 +48,10 @@ namespace Auth0Client.iOS.Sample
 				Tenant, 						// tenant
 				ClientID); 						// clientID
 
-			this.wireLogin(client);
+			this.WireLogin(client);
 		}
 
-		partial void loginWithConnectionButtonClick (NSObject sender)
+		private void LoginWithConnectionButtonClick ()
 		{
 			// This uses a specific connection: google-oauth2
 			var client = new Auth0.SDK.Auth0Client(
@@ -58,10 +60,21 @@ namespace Auth0Client.iOS.Sample
 				ClientID, 						// clientID
 				"google-oauth2");				// connection name
 
-			this.wireLogin(client);
+			this.WireLogin(client);
 		}
 
-		private void wireLogin (Auth0.SDK.Auth0Client client)
+		private void LoginWithUsernamePassword ()
+		{
+			var client = new Auth0.SDK.Auth0Client (
+				"Auth0", 						// title
+				Tenant, 						// tenant
+				ClientID,						// clientID
+				"dbtest.com");					// connection name
+
+			this.WireLogin(client, true);
+		}
+
+		private void WireLogin (Auth0.SDK.Auth0Client client, bool fromUsernamePassword = false)
 		{
 			client.Completed += (object sender, Xamarin.Auth.AuthenticatorCompletedEventArgs e) => 
 			{
@@ -85,8 +98,20 @@ namespace Auth0Client.iOS.Sample
 				this.ShowResult(error: e.Message);
 			};
 
-			// We're ready to present the login UI
-			this.PresentViewController(client.GetUI(), true, null);
+			if (!fromUsernamePassword) {
+				// Present the login UI
+				this.PresentViewController (client.GetUI (), true, null);
+			} 
+			else 
+			{
+				// Perform authentication based on user/password
+				client.Authenticate(
+					ClientSecret, 					// client secret
+					this.userNameElement.Value, 	// username
+					this.passwordElement.Value);	// password
+
+				// TODO: show loading icon
+			}
 		}
 
 		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
@@ -94,12 +119,9 @@ namespace Auth0Client.iOS.Sample
 			// We presented the UI, so it's up to us to dimiss it on iOS
 			this.DismissViewController (true, null);
 
-			this.txtAccessToken.Text = accessToken;
-			this.txtIdToken.Text = idToken;
-			this.lblUserName.Text = 
-				string.IsNullOrEmpty(error) ? string.Format("Hi {0}!", userName) : "Error: " + error;
-
-			this.lblUserName.SizeToFit ();
+			this.resultSectionRow.Caption = !string.IsNullOrWhiteSpace (error) ?
+				string.Format ("ERROR: {0}", error) :
+				string.Format ("Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", userName, accessToken, idToken, Environment.NewLine);
 		}
 	}
 }

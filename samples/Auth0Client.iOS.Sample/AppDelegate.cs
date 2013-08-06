@@ -25,8 +25,9 @@ namespace Auth0Client.iOS.Sample
 		public override bool FinishedLaunching (UIApplication app, NSDictionary options)
 		{
 			window = new UIWindow (UIScreen.MainScreen.Bounds);
-			
-			viewController = new Auth0Client_iOS_SampleViewController ();
+
+			var root = new MonoTouch.Dialog.RootElement ("Auth0Client - iOS Sample");
+			viewController = new Auth0Client_iOS_SampleViewController (root);
 			window.RootViewController = viewController;
 			window.MakeKeyAndVisible ();
 			

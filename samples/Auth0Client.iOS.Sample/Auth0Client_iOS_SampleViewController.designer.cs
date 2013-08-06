@@ -4,44 +4,39 @@
 // actions made in the Xcode designer. If it is removed, they will be lost.
 // Manual changes to this file may not be handled correctly.
 //
+using System;
+using System.Drawing;
+using Auth0.SDK;
+using MonoTouch.Dialog;
 using MonoTouch.Foundation;
+using MonoTouch.UIKit;
 
 namespace Auth0Client.iOS.Sample
 {
 	[Register ("Auth0Client_iOS_SampleViewController")]
 	partial class Auth0Client_iOS_SampleViewController
 	{
-		[Outlet]
-		MonoTouch.UIKit.UILabel lblUserName { get; set; }
+		internal EntryElement userNameElement;
+		internal EntryElement passwordElement;
+		internal MultilineElement resultSectionRow;
 
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtAccessToken { get; set; }
-
-		[Outlet]
-		MonoTouch.UIKit.UITextField txtIdToken { get; set; }
-
-		[Action ("loginWithConnectionButtonClick:")]
-		partial void loginWithConnectionButtonClick (MonoTouch.Foundation.NSObject sender);
-
-		[Action ("loginWithWidgetButtonClick:")]
-		partial void loginWithWidgetButtonClick (MonoTouch.Foundation.NSObject sender);
-		
-		void ReleaseDesignerOutlets ()
+		private void Initialize()
 		{
-			if (lblUserName != null) {
-				lblUserName.Dispose ();
-				lblUserName = null;
-			}
+			var login1 = new Section ("Login");
+			login1.Add (new StyledStringElement ("Login with Widget", this.LoginWithWidgetButtonClick));
+			login1.Add (new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick));
 
-			if (txtAccessToken != null) {
-				txtAccessToken.Dispose ();
-				txtAccessToken = null;
-			}
+			var login2 = new Section ("Login with user/password");
+			login2.Add (this.userNameElement = new EntryElement ("User", string.Empty, string.Empty));
+			login2.Add (this.passwordElement = new EntryElement ("Password", string.Empty, string.Empty, true));
+			login2.Add (new StyledStringElement ("Login", this.LoginWithUsernamePassword));
 
-			if (txtIdToken != null) {
-				txtIdToken.Dispose ();
-				txtIdToken = null;
-			}
+			var result = new Section ("Result");
+			result.Add(this.resultSectionRow = new MultilineElement (string.Empty));
+
+			this.Root.Add (login1);
+			this.Root.Add (login2);
+			this.Root.Add (result);
 		}
 	}
 }
