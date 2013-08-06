@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
@@ -14,7 +15,12 @@ namespace Auth0.SDK
 	{
 		static string AuthorizeUrl = "https://{0}.auth0.com/authorize?client_id={1}&scope=openid%20profile&redirect_uri={2}&response_type=token&connection={3}";
 		static string LoginWidgetUrl = "https://{0}.auth0.com/login/?client={1}&scope=openid%20profile&redirect_uri={2}&response_type=token";
+		static string ResourceOwnerEndpoint = "https://{0}.auth0.com/oauth/ro";
 		static string DefaultCallback = "https://{0}.auth0.com/mobile";
+
+		private readonly string tenant;
+		private readonly string clientId;
+		private readonly string connection;
 
 		string state; 
 		Uri startUrl;
@@ -30,6 +36,9 @@ namespace Auth0.SDK
 		public Auth0Client (string title, string tenant, string clientId, string connection, Uri callbackurl = null) 
 			: this( title, string.Format(AuthorizeUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant)), connection), ValidateCallback(callbackurl, tenant))
 		{
+			this.clientId = clientId;
+			this.tenant = tenant;
+			this.connection = connection;
 		}
 
 		/// <summary>
@@ -42,6 +51,8 @@ namespace Auth0.SDK
 		public Auth0Client (string title, string tenant, string clientId, Uri callbackurl = null)
 			: this( title, string.Format(LoginWidgetUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant))), ValidateCallback(callbackurl, tenant))
 		{
+			this.clientId = clientId;
+			this.tenant = tenant;
 		}
 	
 		private Auth0Client(string title, string startUri, string callback )
@@ -65,6 +76,54 @@ namespace Auth0.SDK
 			var tcs = new TaskCompletionSource<Uri> ();
 			tcs.SetResult (startUrl);
 			return tcs.Task;
+		}
+
+		/// <summary>
+		/// Authenticate user from an specified connection with OAuth2 'Resource Owner Password Credentials Grant'
+		/// </summary>
+		/// <param name="clientSecret">The Client Secret for the application defined in Auth0</param>
+		/// <param name="userName">User name</param>
+		/// <param name="password">User password</param>
+		public void Authenticate(string clientSecret, string userName, string password)
+		{
+			var endpoint = string.Format (ResourceOwnerEndpoint, tenant);
+			var parameters = new Dictionary<string, string> 
+			{
+				{ "grant_type", "password" },
+				{ "client_id", this.clientId },
+				{ "client_secret", clientSecret },
+				{ "connection", this.connection },
+				{ "username", userName },
+				{ "password", password },
+				{ "scope", "openid profile" }
+			};
+
+			var request = new Request ("POST", new Uri(endpoint), parameters);
+			request.GetResponseAsync ().ContinueWith(t => 
+			{
+				try
+				{
+					var text = t.Result.GetResponseText();
+					var data = JObject.Parse(text).ToObject<Dictionary<string, string>>();
+
+					if (data.ContainsKey ("error")) 
+					{
+						throw new AuthException ("Error authenticating: " + data["error"]);
+					} 
+					else if (data.ContainsKey ("access_token"))
+					{
+						this.OnRetrievedAccountProperties(data);
+					} 
+					else 
+					{
+						throw new AuthException ("Expected access_token in access token response, but did not receive one.");
+					}
+				}
+				catch (Exception ex)
+				{
+					this.OnError(ex);
+				}
+			});
 		}
 
 		protected override void OnRedirectPageLoaded (Uri url, IDictionary<string, string> query, IDictionary<string, string> fragment)
