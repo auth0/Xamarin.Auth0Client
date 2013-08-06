@@ -1,9 +1,9 @@
 This tutorial explains how to integrate [Auth0](http://developers.auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
 
-* Adding authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter** or more enterprise like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider** out there. 
-* Adding **username/password databases**
-* Adding support for **[link different accounts](https://docs.auth0.com/link-accounts)** to the same user
-* Support for generating signed Json Web Tokens to call your APIs and **flow the user identity** securely.
+* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**. 
+* Add authentication through more traditional **username/password databases**.
+* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
+* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
 * Support for integrating with **Windows Azure Mobile Services backends**.
 
 The library is cross-platform, so once you learn it on iOS, you're all set on Android.
@@ -18,10 +18,10 @@ The library is cross-platform, so once you learn it on iOS, you're all set on An
 
 There are two options to do the integration: 
 
-1. Using the [Auth0 Login Widget](https://docs.auth0.com/login-widget) inside a Web View (this is like plug and play).
-2. Creating your own UI (more work but you control the UI)
+1. Using the [Auth0 Login Widget](https://docs.auth0.com/login-widget) inside a Web View (this is the simplest with only a few lines of code required).
+2. Creating your own UI (more work, but higher control the UI and overall experience)
 
-To start with, we'd recommend using the widget. Anyway, changes to do your own UI are minimum. Here is a snippet of code to copy paste. 
+To start with, we'd recommend using the __Login Widget__. Here is a snippet of code to copy & paste on your project: 
 
 ```csharp
 using Auth0.SDK;
@@ -53,15 +53,15 @@ Intents intent = auth0.GetUI(this);
 StartActivityForResult(intent, 42);
 ```
 
-> You can obtain {subdomain} and {clientId} from your settings page in the Auth0 Dashboard
+> You can obtain the {subdomain} and the {clientId} from your application's settings page on the Auth0 Dashboard.
 
 > `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
-![](http://puu.sh/3UqNG.png)
+![](https://docs.auth0.com/img/xamarin.auth0client.png)
 
-### Want to do your own UI?
+### Skipping the Identity Selector
 
-You have to add the `connection` parameter to the constructor and the user will be sent straight to the specified `connection`:
+If you know which identity provider you want to use, you can add a `connection` parameter to the constructor and the user will be sent straight to the specified `connection`:
 
 ```csharp
 using Auth0.SDK;
@@ -77,10 +77,10 @@ var auth = new Auth0Client (
 
 ## Accessing user information
 
-Upon successful authentication, the `Complete` event will fire. `Auth0Client` will set the `eventArgs.Account.Username` property to that obtained from the Identity Provider. You will also get from eventArgs.Account property:
+Upon successful authentication, the `Complete` event will fire. `Auth0Client` will set the `eventArgs.Account.Username` property to that obtained from the Identity Provider. You will also get the following attributes from `eventArgs.Account` property:
 
-* `eventArgs.Account.GetProfile()`: an extension method which returns a `Newtonsoft.Json.Linq.JObject` object (from [Json.NET component](http://components.xamarin.com/view/json.net/)) containing all of the user attributes.
+* `eventArgs.Account.GetProfile()`: an extension method which returns a `Newtonsoft.Json.Linq.JObject` object (from [Json.NET component](http://components.xamarin.com/view/json.net/)) containing all available user attributes.
 * `eventArgs.Account.Properties["id_token"]`: is a Json Web Token (JWT) containing all of the user attributes and it is signed with your client secret. This is useful to call your APIs and flow the user identity.
-* `eventArgs.Account.Properties["access_token"]`: the `access_token` can be used to [link accounts](link-accounts).
+* `eventArgs.Account.Properties["access_token"]`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](link-accounts).
 
-> If you have the __Windows Azure Mobile Services__ (WAMS) add-on enabled, Auth0 will sign the JWT with WAMS `masterkey`. Also the JWT will be compatible with the format expected by WAMS.
+> If you have the __Windows Azure Mobile Services__ (WAMS) add-on enabled, Auth0 will sign the JWT with WAMS `masterkey`. Also the JWT will be compatible with the format expected by WAMS. More on this is explained [here](https://docs.auth0.com/jwt#5).

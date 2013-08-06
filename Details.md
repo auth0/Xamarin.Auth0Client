@@ -30,7 +30,7 @@ Intents intent = auth0.GetUI(this);
 StartActivityForResult(intent, 42);
 ```
 
-> You can obtain {subdomain} and {clientId} from your settings page in the Auth0 Dashboard.
+> You can obtain {subdomain} and {clientId} from your application's settings page on the Auth0 Dashboard.
 
 The above example will display the [__Auth0 Login Widget__](https://docs.auth0.com/login-widget). If you add the `connection` parameter to the constructor, the user will be sent straight to the specified `connection`:
 
