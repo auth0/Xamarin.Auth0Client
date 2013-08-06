@@ -101,6 +101,7 @@
     <Compile Include="Auth0Client_iOS_SampleViewController.designer.cs">
       <DependentUpon>Auth0Client_iOS_SampleViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="LoadingOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

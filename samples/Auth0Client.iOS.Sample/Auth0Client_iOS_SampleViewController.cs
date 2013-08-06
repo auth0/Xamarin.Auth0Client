@@ -65,6 +65,8 @@ namespace Auth0Client.iOS.Sample
 
 		private void LoginWithUsernamePassword ()
 		{
+			this.View.Add (this.loadingOverlay);
+
 			var client = new Auth0.SDK.Auth0Client (
 				"Auth0", 						// title
 				Tenant, 						// tenant
@@ -110,13 +112,13 @@ namespace Auth0Client.iOS.Sample
 					ClientSecret, 					// client secret
 					this.userNameElement.Value, 	// username
 					this.passwordElement.Value);	// password
-
-				// TODO: show loading icon
 			}
 		}
 
 		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
 		{
+			this.loadingOverlay.Hide ();
+
 			// We presented the UI, so it's up to us to dimiss it on iOS
 			this.DismissViewController (true, null);
 

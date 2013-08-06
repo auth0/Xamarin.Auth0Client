@@ -16,12 +16,15 @@ namespace Auth0Client.iOS.Sample
 	[Register ("Auth0Client_iOS_SampleViewController")]
 	partial class Auth0Client_iOS_SampleViewController
 	{
+		internal LoadingOverlay loadingOverlay;
 		internal EntryElement userNameElement;
 		internal EntryElement passwordElement;
 		internal MultilineElement resultSectionRow;
 
 		private void Initialize()
 		{
+			this.loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
+
 			var login1 = new Section ("Login");
 			login1.Add (new StyledStringElement ("Login with Widget", this.LoginWithWidgetButtonClick));
 			login1.Add (new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick));
