@@ -11,8 +11,8 @@ Please read [Getting Started](https://github.com/auth0/Xamarin.Auth0Client/blob/
 Build __Xamarin.Auth0Client.sln__ solution, [download](https://components.xamarin.com/submit/xpkg) the xamarin-component command line tool and run the following script:
 
     mono xpkg/xamarin-component.exe create-manually Auth0Client-0.1.xam \ 
-    --name="Auth0Client" \ 
-    --summary="A multiplatform (iOS, Android) client for Auth0 based on Xamarin.Auth." \ 
+    --name="Auth0 SDK" \ 
+    --summary="Add login with Google, Facebook, Twitter, Amazon, GitHub, LinkedIn; Windows Azure AD, Google Apps, AD, and SAML; or username/pwd database. One API for all." \ 
     --publisher="Auth0" \ 
     --website="http://auth0.com" \ 
     --details="Details.md" \ 
