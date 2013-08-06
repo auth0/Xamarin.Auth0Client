@@ -27,7 +27,7 @@ auth.Completed += (sender, eventArgs) => {
 	}
 };
 
-// show the UI
+// Show the UI
 // iOS      [ViewDidAppear]
 UINavigationControllers view = auth0.GetUI();
 PresentViewController(view, true, null);
