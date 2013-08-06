@@ -98,7 +98,8 @@ namespace Auth0Client.iOS.Sample
 				this.ShowResult(error: e.Message);
 			};
 
-			if (!fromUsernamePassword) {
+			if (!fromUsernamePassword) 
+			{
 				// Present the login UI
 				this.PresentViewController (client.GetUI (), true, null);
 			} 
