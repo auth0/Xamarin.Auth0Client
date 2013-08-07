@@ -1,26 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-    <Button
-        android:id="@+id/loginWidget"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Login with Widget"
-        android:autoText="false" />
-    <Button
-        android:text="Login with Google"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/loginConnection" />
-    <TextView
-        android:text="Result"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/resultLbl" />
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/userProfileLbl" />
-</LinearLayout>
+    android:layout_height="fill_parent"
+    android:stretchColumns="1">
+    <TableRow>
+        <Button
+            android:id="@+id/loginWithWidget"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Login with Widget"
+            android:gravity="center" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/loginWithConnection"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Login with Google"
+            android:gravity="center" />
+    </TableRow>
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+    <TableRow>
+        <EditText
+            android:id="@+id/txtUserName"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:hint="user name" />
+    </TableRow>
+    <TableRow>
+        <EditText
+            android:id="@+id/txtUserPassword"
+            android:layout_column="0"
+            android:layout_span="2"
+            android:hint="user password"
+            android:password="true" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/loginWithUserPassword"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Login"
+            android:gravity="center" />
+    </TableRow>
+    <View
+        android:layout_height="2dip"
+        android:background="#FF909090" />
+    <TableRow>
+        <TextView
+            android:text="Result"
+            android:layout_span="2" />
+    </TableRow>
+    <TableRow>
+        <ScrollView
+            android:layout_span="2"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:id="@+id/txtResult"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent" />
+        </ScrollView>
+    </TableRow>
+</TableLayout>
