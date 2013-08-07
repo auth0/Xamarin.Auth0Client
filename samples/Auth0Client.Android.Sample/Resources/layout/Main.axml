@@ -4,6 +4,11 @@
     android:layout_height="fill_parent"
     android:stretchColumns="1">
     <TableRow>
+        <TextView
+            android:text="Login"
+            android:layout_span="2" />
+    </TableRow>
+    <TableRow>
         <Button
             android:id="@+id/loginWithWidget"
             android:layout_width="match_parent"
@@ -24,6 +29,11 @@
     <View
         android:layout_height="2dip"
         android:background="#FF909090" />
+    <TableRow>
+        <TextView
+            android:text="Login with user/password"
+            android:layout_span="2" />
+    </TableRow>
     <TableRow>
         <EditText
             android:id="@+id/txtUserName"
