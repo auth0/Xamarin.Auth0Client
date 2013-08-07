@@ -85,18 +85,12 @@ namespace Auth0Client.iOS.Sample
 				error = new Exception ("Authentication was canceled.");
 			}
 
-			this.resultSectionRow.Caption = error != null ?
-				string.Format (
-					"ERROR: {0}", 
-					error.InnerException != null ? 
-						error.InnerException.Message : 
-						error.Message) :
-				string.Format (
-					"Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", 
-					taskResult.Result.Profile["name"], 
-					taskResult.Result.Auth0AccessToken, 
-					taskResult.Result.IdToken, 
-					Environment.NewLine);
+			this.accessTokenElement.Value = error == null ? taskResult.Result.Auth0AccessToken : string.Empty;
+			this.resultElement.Value = error == null ?
+				taskResult.Result.Profile["name"].ToString () :
+				error.InnerException != null ? error.InnerException.Message : error.Message;
+
+			this.ReloadData ();
 		}
 	}
 }

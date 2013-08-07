@@ -19,25 +19,37 @@ namespace Auth0Client.iOS.Sample
 		internal LoadingOverlay loadingOverlay;
 		internal EntryElement userNameElement;
 		internal EntryElement passwordElement;
-		internal MultilineElement resultSectionRow;
+		internal StyledStringElement resultElement;
+		internal StyledStringElement accessTokenElement;
 
 		private void Initialize()
 		{
+			var loginWithWidgetBtn = new StyledStringElement ("Login with Widget", this.LoginWithWidgetButtonClick) {
+				Alignment = UITextAlignment.Center
+			};
+
+			var loginWithConnectionBtn = new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick) {
+				Alignment = UITextAlignment.Center
+			};
+
+			var loginBtn = new StyledStringElement ("Login", this.LoginWithUsernamePassword) {
+				Alignment = UITextAlignment.Center
+			};
+
 			var login1 = new Section ("Login");
-			login1.Add (new StyledStringElement ("Login with Widget", this.LoginWithWidgetButtonClick));
-			login1.Add (new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick));
+			login1.Add (loginWithWidgetBtn);
+			login1.Add (loginWithConnectionBtn);
 
 			var login2 = new Section ("Login with user/password");
 			login2.Add (this.userNameElement = new EntryElement ("User", string.Empty, string.Empty));
 			login2.Add (this.passwordElement = new EntryElement ("Password", string.Empty, string.Empty, true));
-			login2.Add (new StyledStringElement ("Login", this.LoginWithUsernamePassword));
+			login2.Add (loginBtn);
 
 			var result = new Section ("Result");
-			result.Add(this.resultSectionRow = new MultilineElement (string.Empty));
+			result.Add(this.resultElement = new StyledStringElement("User", string.Empty));
+			result.Add(this.accessTokenElement = new StyledStringElement("Access Token", string.Empty));
 
-			this.Root.Add (login1);
-			this.Root.Add (login2);
-			this.Root.Add (result);
+			this.Root.Add (new Section[] { login1, login2, result });
 		}
 	}
 }
