@@ -10,10 +10,13 @@ namespace Auth0Client.iOS.Sample
 {
 	public partial class Auth0Client_iOS_SampleViewController : DialogViewController
 	{
-		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
-		private const string SubDomain = "iaco2";
-		private const string ClientID = "XviE9dLlREjXZduIzTqtsGsiZELjls8z";
-		private const string ClientSecret = "g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy";
+		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard
+		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
+			"iaco2",
+			"XviE9dLlREjXZduIzTqtsGsiZELjls8z",
+			"g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy");
+
+		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
 		public Auth0Client_iOS_SampleViewController (RootElement root) : base(root)
 		{
@@ -44,35 +47,19 @@ namespace Auth0Client.iOS.Sample
 		private void LoginWithWidgetButtonClick ()
 		{
 			// This will show all connections enabled in Auth0, and let the user choose the identity provider
-			var client = new Auth0.SDK.Auth0Client (
-				SubDomain,								// subDomain
-				ClientID,								// clientID
-				ClientSecret);							// client secret
-
-			client.LoginAsync (this)					// current controller
-				.ContinueWith(task => {
-					this.InvokeOnMainThread(() => {
-						this.DismissViewController (true, null);
-						this.ShowResult (task);
-					});	
-				});
+			this.client.LoginAsync (this)					// current controller
+						.ContinueWith(
+							task => this.ShowResult (task), 
+							this.scheduler);
 		}
 
 		private void LoginWithConnectionButtonClick ()
 		{
 			// This uses a specific connection: google-oauth2
-			var client = new Auth0.SDK.Auth0Client (
-				SubDomain,								// subDomain
-				ClientID,								// clientID
-				ClientSecret);							// client secret
-
-			client.LoginAsync (this, "google-oauth2")	// current controller and connection name
-				.ContinueWith(task => {
-					this.InvokeOnMainThread(() => {
-						this.DismissViewController (true, null);
-						this.ShowResult (task);
-					});
-				});
+			this.client.LoginAsync (this, "google-oauth2")	// current controller and connection name
+						.ContinueWith(
+							task => this.ShowResult (task), 
+							this.scheduler);
 		}
 
 		private void LoginWithUsernamePassword ()
@@ -81,19 +68,13 @@ namespace Auth0Client.iOS.Sample
 			this.loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
 			this.View.Add (this.loadingOverlay);
 
-			var connection = "dbtest.com";				// connection name
-			var client = new Auth0.SDK.Auth0Client (
-				SubDomain,								// subDomain
-				ClientID,								// clientID
-				ClientSecret);							// client secret
-
-			client.LoginAsync (connection, this.userNameElement.Value, this.passwordElement.Value)
-				.ContinueWith (task => {
-					this.InvokeOnMainThread(() => {
-                   		this.loadingOverlay.Hide ();
-						this.ShowResult (task);
-					});
-				  });
+			// This uses a specific connection which supports username/password authentication
+			this.client.LoginAsync ("dbtest.com", this.userNameElement.Value, this.passwordElement.Value)
+						.ContinueWith (task => {
+							this.loadingOverlay.Hide ();
+							this.ShowResult (task);
+						},
+						this.scheduler);
 		}
 
 		private void ShowResult(Task<Auth0User> taskResult)
