@@ -45,7 +45,7 @@ namespace Auth0Client.iOS.Sample
 		{
 			// This will show all connections enabled in Auth0, and let the user choose the identity provider
 			var client = new Auth0.SDK.Auth0Client (
-				SubDomain, 								// subDomain
+				SubDomain,								// subDomain
 				ClientID,								// clientID
 				ClientSecret);							// client secret
 
@@ -54,7 +54,7 @@ namespace Auth0Client.iOS.Sample
 					this.InvokeOnMainThread(() => {
 						this.DismissViewController (true, null);
 						this.ShowResult (task);
-					});
+					});	
 				});
 		}
 
@@ -62,7 +62,7 @@ namespace Auth0Client.iOS.Sample
 		{
 			// This uses a specific connection: google-oauth2
 			var client = new Auth0.SDK.Auth0Client (
-				SubDomain, 								// subDomain
+				SubDomain,								// subDomain
 				ClientID,								// clientID
 				ClientSecret);							// client secret
 
@@ -83,7 +83,7 @@ namespace Auth0Client.iOS.Sample
 
 			var connection = "dbtest.com";				// connection name
 			var client = new Auth0.SDK.Auth0Client (
-				SubDomain, 								// subDomain
+				SubDomain,								// subDomain
 				ClientID,								// clientID
 				ClientSecret);							// client secret
 
