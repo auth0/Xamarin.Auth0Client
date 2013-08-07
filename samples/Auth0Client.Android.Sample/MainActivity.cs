@@ -11,7 +11,7 @@ using Newtonsoft.Json.Linq;
 
 namespace Auth0Client.Android.Sample
 {
-	[Activity (Label = "Auth0Client.Android.Sample", MainLauncher = true)]
+	[Activity (Label = "Auth0Client - Android Sample", MainLauncher = true)]
 	public class MainActivity : Activity
 	{
 		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard
@@ -26,6 +26,8 @@ namespace Auth0Client.Android.Sample
 		{
 			base.OnCreate (bundle);
 			this.SetContentView(Resource.Layout.Main);
+			this.FindViewById<TextView> (Resource.Id.id_token).Text = string.Empty;
+			this.FindViewById<TextView> (Resource.Id.userName).Text = string.Empty;
 
 			var loginWidget = this.FindViewById<Button> (Resource.Id.loginWidget);
 			loginWidget.Click += delegate {
