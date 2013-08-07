@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MonoTouch.UIKit;
 using Newtonsoft.Json.Linq;
 using Xamarin.Auth;
 
@@ -12,9 +12,12 @@ namespace Auth0.SDK
 	/// <summary>
 	/// A simple client to Authenticate Users with Auth0.
 	/// </summary>
-	public class Auth0Client
+	public partial class Auth0Client
 	{
-		private static string ResourceOwnerEndpoint = "https://{0}.auth0.com/oauth/ro";
+		private const string AuthorizeUrl = "https://{0}.auth0.com/authorize?client_id={1}&scope=openid%20profile&redirect_uri={2}&response_type=token&connection={3}";
+		private const string LoginWidgetUrl = "https://{0}.auth0.com/login/?client={1}&scope=openid%20profile&redirect_uri={2}&response_type=token";
+		private const string ResourceOwnerEndpoint = "https://{0}.auth0.com/oauth/ro";
+		private const string DefaultCallback = "https://{0}.auth0.com/mobile";
 
 		private readonly string subDomain;
 		private readonly string clientId;
@@ -27,52 +30,24 @@ namespace Auth0.SDK
 			this.clientSecret = clientSecret;
 		}
 
-		/// <summary>
-		/// Login with OAuth2 'Implicit Granting'
-		/// </summary>
-		/// <returns>Authentication result callback.</returns>
-		/// <param name="title">A title to show on the login screen.</param>
-		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
-		/// <param name="callbackUrl">The redirect_uri used to detect the end of the authentication transaction</param>
-		public void LoginAsync(UIViewController controller, Action<AuthenticationResult> onComplete, string title = "", string connection = "", Uri callbackUrl = null)
+		public Auth0User CurrentUser { get; private set; }
+
+		public string CallbackUrl
 		{
-			var result = new AuthenticationResult();
-			var authenticator = new Auth0Authenticator (
-				title,
-				this.subDomain,
-				this.clientId,
-				connection,
-				callbackUrl);
-
-			authenticator.Completed += (object sender, AuthenticatorCompletedEventArgs e) => {
-				if (e.IsAuthenticated) {
-					result.Success = true;
-					result.Auth0AccessToken = e.Account.Properties["access_token"];
-					result.IdToken = e.Account.Properties["id_token"];
-					result.User = e.Account.Properties["id_token"].Split ('.')[1].ToJson();
-				}
-
-				onComplete(result);
-			};
-
-			authenticator.Error += (object sender, AuthenticatorErrorEventArgs e) => {
-				result.Error = e.Exception;
-
-				onComplete(result);
-			};
-
-			// Present the login UI
-			controller.PresentViewController (authenticator.GetUI (), true, null);
+			get
+			{
+				return string.Format (DefaultCallback, this.subDomain);
+			}
 		}
 
 		/// <summary>
-		/// Login with OAuth2 'Resource Owner Password Credentials Grant'.
+		///  Log a user into an Auth0 application given an user name and password.
 		/// </summary>
-		/// <returns>Authentication result callback.</returns>
-		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
-		/// <param name="userName">User name.</param>
-		/// <param name="password">User password.</param>
-		public Task<AuthenticationResult> LoginAsync(string connection, string userName, string password)
+		/// <returns>Task that will complete when the user has finished authentication.</returns>
+		/// <param name="connection" type="string">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
+		/// <param name="userName" type="string">User name.</param>
+		/// <param name="password type="string"">User password.</param>
+		public Task<Auth0User> LoginAsync(string connection, string userName, string password)
 		{
 			var endpoint = string.Format (ResourceOwnerEndpoint, this.subDomain);
 			var parameters = new Dictionary<string, string> 
@@ -87,10 +62,8 @@ namespace Auth0.SDK
 			};
 
 			var request = new Request ("POST", new Uri(endpoint), parameters);
-			return request.GetResponseAsync ().ContinueWith<AuthenticationResult>(t => 
+			return request.GetResponseAsync ().ContinueWith<Auth0User>(t => 
 			{
-				var result = new AuthenticationResult();
-
 				try
 				{
 					var text = t.Result.GetResponseText();
@@ -98,70 +71,62 @@ namespace Auth0.SDK
 
 					if (data.ContainsKey ("error")) 
 					{
-						result.Error = new AuthException ("Error authenticating: " + data["error"]);
+						throw new AuthException ("Error authenticating: " + data["error"]);
 					} 
 					else if (data.ContainsKey ("access_token"))
 					{
-						result.Success = true;
-						result.Auth0AccessToken = data["access_token"];
-						result.IdToken = data["id_token"];
-						result.User = data["id_token"].Split ('.')[1].ToJson();
+						this.SetupCurrentUser (data);
 					} 
 					else 
 					{
-						result.Error = new AuthException ("Expected access_token in access token response, but did not receive one.");
+						throw new AuthException ("Expected access_token in access token response, but did not receive one.");
 					}
-				}
-				catch (AggregateException ex)
-				{
-					result.Error = ex.Flatten();
 				}
 				catch (Exception ex)
 				{
-					result.Error = ex;
+					throw ex;
 				}
 
-				return result;
+				return this.CurrentUser;
 			});
 		}
-	}
 
-	public class AuthenticationResult
-	{
-		public bool Success { get; set; }
-
-		public string Auth0AccessToken { get; set; }
-
-		public string IdToken { get; set; }
-
-		public JObject User { get; set; }
-
-		public Exception Error { get; set; }
-	}
-
-	internal static class Extensions
-	{
-		internal static JObject ToJson(this string jsonString)
+		/// <summary>
+		/// Log a user out of a Auth0 application.
+		/// </summary>
+		public void Logout()
 		{
-			var decoded = Encoding.Default.GetString(jsonString.Base64UrlDecode());
-			return JObject.Parse(decoded);
+			this.CurrentUser = null;
+			WebAuthenticator.ClearCookies();
 		}
 
-		internal static byte[] Base64UrlDecode(this string input)
+		private void SetupCurrentUser (IDictionary<string, string> accountProperties)
 		{
-			var output = input;
-			output = output.Replace('-', '+'); 	// 62nd char of encoding
-			output = output.Replace('_', '/'); 	// 63rd char of encoding
+			this.CurrentUser = new Auth0User (accountProperties);
+		}
 
-			switch (output.Length % 4) 			// Pad with trailing '='s
-			{
-				case 0: break; 					// No pad chars in this case
-				case 2: output += "=="; break; 	// Two pad chars
-				case 3: output += "="; break; 	// One pad char
-				default: throw new InvalidOperationException("Illegal base64url string!");
+		private WebRedirectAuthenticator GetAuthenticator(string connection)
+		{
+			// Generate state to include in startUri
+			var chars = new char[16];
+			var rand = new Random ();
+			for (var i = 0; i < chars.Length; i++) {
+				chars [i] = (char)rand.Next ((int)'a', (int)'z' + 1);
 			}
 
-			return Convert.FromBase64String(output); // Standard base64 decoder
+			var redirectUri = this.CallbackUrl;
+			var authorizeUri = !string.IsNullOrWhiteSpace (connection) ?
+				string.Format (AuthorizeUrl, subDomain, clientId, Uri.EscapeDataString (redirectUri), connection) :
+				string.Format (LoginWidgetUrl, subDomain, clientId, Uri.EscapeDataString (redirectUri));
+
+			var state = new string (chars);
+			var startUri = new Uri (authorizeUri + "&state=" + state);
+			var endUri = new Uri (redirectUri);
+
+			var auth = new WebRedirectAuthenticator (startUri, endUri);
+			auth.ClearCookiesBeforeLogin = false;
+
+			return auth;
 		}
 	}
 }

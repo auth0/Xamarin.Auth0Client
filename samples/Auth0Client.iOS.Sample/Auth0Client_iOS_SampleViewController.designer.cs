@@ -23,8 +23,6 @@ namespace Auth0Client.iOS.Sample
 
 		private void Initialize()
 		{
-			this.loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
-
 			var login1 = new Section ("Login");
 			login1.Add (new StyledStringElement ("Login with Widget", this.LoginWithWidgetButtonClick));
 			login1.Add (new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick));

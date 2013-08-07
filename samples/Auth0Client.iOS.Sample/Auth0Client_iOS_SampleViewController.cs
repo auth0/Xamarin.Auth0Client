@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using System.Threading.Tasks;
 using Auth0.SDK;
 using MonoTouch.Dialog;
 using MonoTouch.Foundation;
@@ -48,11 +49,12 @@ namespace Auth0Client.iOS.Sample
 				ClientID,								// clientID
 				ClientSecret);							// client secret
 
-			client.LoginAsync (
-				this, 									// current controller
-				(result) => {							// onComplete handler
-					this.DismissViewController (true, null);
-					this.ShowResult (result);
+			client.LoginAsync (this)					// current controller
+				.ContinueWith(task => {
+					this.InvokeOnMainThread(() => {
+						this.DismissViewController (true, null);
+						this.ShowResult (task);
+					});
 				});
 		}
 
@@ -64,17 +66,19 @@ namespace Auth0Client.iOS.Sample
 				ClientID,								// clientID
 				ClientSecret);							// client secret
 
-			client.LoginAsync (
-				this, 									// current controller
-				connection: "google-oauth2",			// connection name
-				onComplete: (result) => {				// onComplete handler
-					this.DismissViewController (true, null);
-					this.ShowResult (result);
+			client.LoginAsync (this, "google-oauth2")	// current controller and connection name
+				.ContinueWith(task => {
+					this.InvokeOnMainThread(() => {
+						this.DismissViewController (true, null);
+						this.ShowResult (task);
+					});
 				});
 		}
 
 		private void LoginWithUsernamePassword ()
 		{
+			// Show loading animation
+			this.loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
 			this.View.Add (this.loadingOverlay);
 
 			var connection = "dbtest.com";				// connection name
@@ -84,31 +88,33 @@ namespace Auth0Client.iOS.Sample
 				ClientSecret);							// client secret
 
 			client.LoginAsync (connection, this.userNameElement.Value, this.passwordElement.Value)
-				  .ContinueWith (t => {
+				.ContinueWith (task => {
 					this.InvokeOnMainThread(() => {
                    		this.loadingOverlay.Hide ();
-						this.ShowResult (t.Result);
+						this.ShowResult (task);
 					});
 				  });
 		}
 
-		private void ShowResult(AuthenticationResult result)
+		private void ShowResult(Task<Auth0User> taskResult)
 		{
-			if (result.Error == null && !result.Success) {
-				result.Error = new Exception ("Authentication was canceled.");
+			Exception error = taskResult.Exception != null ? taskResult.Exception.Flatten () : null;
+
+			if (error == null && taskResult.IsCanceled) {
+				error = new Exception ("Authentication was canceled.");
 			}
 
-			this.resultSectionRow.Caption = !result.Success ?
+			this.resultSectionRow.Caption = error != null ?
 				string.Format (
 					"ERROR: {0}", 
-					result.Error.InnerException != null ? 
-						result.Error.InnerException.Message : 
-						result.Error.Message) :
+					error.InnerException != null ? 
+						error.InnerException.Message : 
+						error.Message) :
 				string.Format (
 					"Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", 
-					result.User["name"], 
-					result.Auth0AccessToken, 
-					result.IdToken, 
+					taskResult.Result.Profile["name"], 
+					taskResult.Result.Auth0AccessToken, 
+					taskResult.Result.IdToken, 
 					Environment.NewLine);
 		}
 	}

@@ -50,6 +50,9 @@
     <Compile Include="..\Auth0Client\Auth0Client.cs">
       <Link>Auth0Client.cs</Link>
     </Compile>
+    <Compile Include="..\Auth0Client\Auth0User.cs">
+      <Link>Auth0User.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
