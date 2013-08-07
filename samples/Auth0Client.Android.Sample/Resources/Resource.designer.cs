@@ -66,9 +66,6 @@ namespace Auth0Client.Android.Sample
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f060003
-			public const int id_token = 2131099651;
-			
 			// aapt resource value: 0x7f060001
 			public const int loginConnection = 2131099649;
 			
@@ -76,7 +73,10 @@ namespace Auth0Client.Android.Sample
 			public const int loginWidget = 2131099648;
 			
 			// aapt resource value: 0x7f060002
-			public const int userName = 2131099650;
+			public const int resultLbl = 2131099650;
+			
+			// aapt resource value: 0x7f060003
+			public const int userProfileLbl = 2131099651;
 			
 			static Id()
 			{

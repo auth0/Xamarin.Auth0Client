@@ -26,8 +26,6 @@ namespace Auth0Client.Android.Sample
 		{
 			base.OnCreate (bundle);
 			this.SetContentView(Resource.Layout.Main);
-			this.FindViewById<TextView> (Resource.Id.id_token).Text = string.Empty;
-			this.FindViewById<TextView> (Resource.Id.userName).Text = string.Empty;
 
 			var loginWidget = this.FindViewById<Button> (Resource.Id.loginWidget);
 			loginWidget.Click += delegate {
@@ -56,10 +54,9 @@ namespace Auth0Client.Android.Sample
 				error = new Exception ("Authentication was canceled.");
 			}
 
-			this.FindViewById<TextView>(Resource.Id.id_token).Text = error == null ? taskResult.Result.IdToken : string.Empty;
-			this.FindViewById<TextView>(Resource.Id.userName).Text = error == null ?
-				taskResult.Result.Profile["name"].ToString () :
-					error.InnerException != null ? error.InnerException.Message : error.Message;
+			this.FindViewById<TextView>(Resource.Id.userProfileLbl).Text = error == null ?
+				taskResult.Result.Profile.ToString() :
+				error.InnerException != null ? error.InnerException.Message : error.Message;
 		}
 	}
 }

@@ -15,13 +15,12 @@
         android:layout_height="wrap_content"
         android:id="@+id/loginConnection" />
     <TextView
-        android:text="Text"
+        android:text="Result"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/userName" />
+        android:id="@+id/resultLbl" />
     <TextView
-        android:text="Text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/id_token" />
+        android:id="@+id/userProfileLbl" />
 </LinearLayout>
