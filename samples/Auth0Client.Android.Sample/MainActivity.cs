@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
@@ -11,84 +12,52 @@ using Newtonsoft.Json.Linq;
 namespace Auth0Client.Android.Sample
 {
 	[Activity (Label = "Auth0Client.Android.Sample", MainLauncher = true)]
-	public class Activity1 : Activity
+	public class MainActivity : Activity
 	{
-		// You can obtain {tenant} and {clientID} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
-		private const string Tenant = "{tenant}";
-		private const string ClientID = "{clientID}";
+		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard
+		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
+			"iaco2",
+			"XviE9dLlREjXZduIzTqtsGsiZELjls8z",
+			"g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy");
+
+		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
 		protected override void OnCreate (Bundle bundle)
 		{
 			base.OnCreate (bundle);
+			this.SetContentView(Resource.Layout.Main);
 
-			SetContentView(Resource.Layout.Main);
-
-			FindViewById<TextView>(Resource.Id.id_token).Text = string.Empty;
-			FindViewById<TextView>(Resource.Id.userName).Text = string.Empty;
-
-			Button loginWidget = FindViewById<Button> (Resource.Id.loginWidget);
-
+			var loginWidget = this.FindViewById<Button> (Resource.Id.loginWidget);
 			loginWidget.Click += delegate {
 				// This will show all connections enabled in Auth0, and let the user choose the identity provider
-				var client = new Auth0.SDK.Auth0Client (
-					"Auth0", 						// title
-					Tenant, 						// tenant
-					ClientID);						// clientID
-
-				this.wireLogin(client);
+				this.client.LoginAsync (this)					// current context
+					.ContinueWith(
+						task => this.ShowResult (task), 
+						this.scheduler);
 			};
 
-			Button loginConnection = FindViewById<Button> (Resource.Id.loginConnection);
-
+			var loginConnection = this.FindViewById<Button> (Resource.Id.loginConnection);
 			loginConnection.Click += delegate {
 				// This uses a specific connection: google-oauth2
-				var client = new Auth0.SDK.Auth0Client (
-					"Auth0", 						// title
-					Tenant, 						// tenant
-					ClientID, 						// clientID
-					"google-oauth2");				// connection name
-
-				this.wireLogin(client);
+				this.client.LoginAsync (this, "google-oauth2")	// current context and connection name
+					.ContinueWith(
+						task => this.ShowResult (task), 
+						this.scheduler);
 			};
 		}
 
-		private void wireLogin (Auth0.SDK.Auth0Client client)
+		private void ShowResult(Task<Auth0User> taskResult)
 		{
-			client.Completed += (object sender, Xamarin.Auth.AuthenticatorCompletedEventArgs e) => 
-			{
-				if (e.IsAuthenticated) 
-				{
-					// All the information gathered from a successful authentication is available in e.Account
-					this.ShowResult(
-						idToken: (string)e.Account.Properties["id_token"],
-						userName: (string)e.Account.GetProfile()["name"]);
-				}
-				else
-				{
-					// The user cancelled
-					this.ShowResult(error: "User cancelled");
-				}
-			};
+			Exception error = taskResult.Exception != null ? taskResult.Exception.Flatten () : null;
 
-			client.Error += (object sender, Xamarin.Auth.AuthenticatorErrorEventArgs e) =>
-			{
-				this.ShowResult(error: e.Message);
-			};
+			if (error == null && taskResult.IsCanceled) {
+				error = new Exception ("Authentication was canceled.");
+			}
 
-			// We're ready to present the login UI
-			var intent = client.GetUI (this);
-			StartActivityForResult(intent, 42);
-		}
-
-		private void ShowResult(string idToken = "", string userName = "", string error = "")
-		{
-			FindViewById<TextView>(Resource.Id.id_token).Text = 
-				!string.IsNullOrEmpty(idToken) ? 
-					string.Format("id_token: {0}", idToken) : string.Empty;
-
-			FindViewById<TextView>(Resource.Id.userName).Text = 
-				string.IsNullOrEmpty(error) ? 
-					string.Format("Hi {0}!", userName) : "Error: " + error;
+			this.FindViewById<TextView>(Resource.Id.id_token).Text = error == null ? taskResult.Result.IdToken : string.Empty;
+			this.FindViewById<TextView>(Resource.Id.userName).Text = error == null ?
+				taskResult.Result.Profile["name"].ToString () :
+					error.InnerException != null ? error.InnerException.Message : error.Message;
 		}
 	}
 }

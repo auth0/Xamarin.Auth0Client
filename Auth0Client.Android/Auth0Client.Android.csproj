@@ -39,10 +39,10 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\samples\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.Android">
-      <HintPath>..\Components\xamarin.auth-1.1.0\lib\android\Xamarin.Auth.Android.dll</HintPath>
+      <HintPath>..\samples\Components\xamarin.auth-1.1.0\lib\android\Xamarin.Auth.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -53,6 +53,7 @@
     <Compile Include="..\Auth0Client\Auth0User.cs">
       <Link>Auth0User.cs</Link>
     </Compile>
+    <Compile Include="Auth0Client.Android.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
