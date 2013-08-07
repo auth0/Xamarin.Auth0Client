@@ -34,10 +34,10 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\samples\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.iOS">
-      <HintPath>..\Components\xamarin.auth-1.1.0\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
+      <HintPath>..\samples\Components\xamarin.auth-1.1.0\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

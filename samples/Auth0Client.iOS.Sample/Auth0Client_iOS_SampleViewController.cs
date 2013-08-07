@@ -12,9 +12,9 @@ namespace Auth0Client.iOS.Sample
 	{
 		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard
 		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
-			"iaco2",
-			"XviE9dLlREjXZduIzTqtsGsiZELjls8z",
-			"g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy");
+			"{subDomain}",
+			"{clientID}",
+			"{clientSecret}");
 
 		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -70,11 +70,9 @@ namespace Auth0Client.iOS.Sample
 
 			// This uses a specific connection which supports username/password authentication
 			this.client.LoginAsync ("dbtest.com", this.userNameElement.Value, this.passwordElement.Value)
-						.ContinueWith (task => {
-							this.loadingOverlay.Hide ();
-							this.ShowResult (task);
-						},
-						this.scheduler);
+						.ContinueWith (
+							task => this.ShowResult (task),
+							this.scheduler);
 		}
 
 		private void ShowResult(Task<Auth0User> taskResult)
@@ -85,12 +83,12 @@ namespace Auth0Client.iOS.Sample
 				error = new Exception ("Authentication was canceled.");
 			}
 
-			this.accessTokenElement.Value = error == null ? taskResult.Result.Auth0AccessToken : string.Empty;
 			this.resultElement.Value = error == null ?
-				taskResult.Result.Profile["name"].ToString () :
+				taskResult.Result.Profile.ToString () :
 				error.InnerException != null ? error.InnerException.Message : error.Message;
 
 			this.ReloadData ();
+			this.loadingOverlay.Hide ();
 		}
 	}
 }
