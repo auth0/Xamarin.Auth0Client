@@ -55,7 +55,6 @@ namespace Auth0Client.iOS.Sample
 		{
 			// This uses a specific connection: google-oauth2
 			var client = new Auth0.SDK.Auth0Client(
-				"Auth0", 						// title
 				Tenant, 						// tenant
 				ClientID, 						// clientID
 				"google-oauth2");				// connection name
@@ -67,13 +66,19 @@ namespace Auth0Client.iOS.Sample
 		{
 			this.View.Add (this.loadingOverlay);
 
+			var connection = "dbtest.com";		// connection name
 			var client = new Auth0.SDK.Auth0Client (
-				"Auth0", 						// title
-				Tenant, 						// tenant
+				Tenant, 						// subDomain
 				ClientID,						// clientID
-				"dbtest.com");					// connection name
+				ClientSecret);					// client secret
 
-			this.WireLogin(client, true);
+			client.LoginAsync (connection, this.userNameElement.Value, this.passwordElement.Value)
+				  .ContinueWith (t => {
+					InvokeOnMainThread(() => {
+                   		this.loadingOverlay.Hide ();
+						this.ShowResult (t.Result);
+					});
+				  });
 		}
 
 		private void WireLogin (Auth0.SDK.Auth0Client client, bool fromUsernamePassword = false)
@@ -100,19 +105,8 @@ namespace Auth0Client.iOS.Sample
 				this.ShowResult(error: e.Message);
 			};
 
-			if (!fromUsernamePassword) 
-			{
-				// Present the login UI
-				this.PresentViewController (client.GetUI (), true, null);
-			} 
-			else 
-			{
-				// Perform authentication based on user/password
-				client.Authenticate(
-					ClientSecret, 					// client secret
-					this.userNameElement.Value, 	// username
-					this.passwordElement.Value);	// password
-			}
+			// Present the login UI
+			this.PresentViewController (client.GetUI (), true, null);
 		}
 
 		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
@@ -125,6 +119,22 @@ namespace Auth0Client.iOS.Sample
 			this.resultSectionRow.Caption = !string.IsNullOrWhiteSpace (error) ?
 				string.Format ("ERROR: {0}", error) :
 				string.Format ("Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", userName, accessToken, idToken, Environment.NewLine);
+		}
+
+		private void ShowResult(AuthenticationResult result)
+		{
+			this.resultSectionRow.Caption = !result.Success ?
+				string.Format (
+					"ERROR: {0}", 
+					result.Error.InnerException != null ? 
+						result.Error.InnerException.Message : 
+						result.Error.Message) :
+				string.Format (
+					"Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", 
+					result.User["name"], 
+					result.Auth0AccessToken, 
+					result.IdToken, 
+					Environment.NewLine);
 		}
 	}
 }

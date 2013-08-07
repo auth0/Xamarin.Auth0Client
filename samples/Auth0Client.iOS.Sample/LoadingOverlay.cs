@@ -54,11 +54,16 @@ namespace Auth0Client.iOS.Sample
 		/// </summary>
 		public void Hide ()
 		{
-			UIView.Animate (
-				0.5, // duration
-				() => { Alpha = 0; },
-			() => { RemoveFromSuperview(); }
-			);
+			try
+			{
+				UIView.Animate (
+					0.5, // duration
+					() => { Alpha = 0; },
+				() => { RemoveFromSuperview(); });
+			}
+			catch (Exception) {
+				throw;
+			}
 		}
 	}
 }

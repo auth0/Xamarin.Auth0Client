@@ -18,28 +18,12 @@ namespace Auth0.SDK
 		static string ResourceOwnerEndpoint = "https://{0}.auth0.com/oauth/ro";
 		static string DefaultCallback = "https://{0}.auth0.com/mobile";
 
-		private readonly string tenant;
+		private readonly string subDomain;
 		private readonly string clientId;
-		private readonly string connection;
+		private readonly string clientSecret;
 
 		string state; 
 		Uri startUrl;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="Auth0.SDK.Auth0Client"/> class, instructing it to use a specific connection (e.g. 'google-oauth2', 'amazon', etc)
-		/// </summary>
-		/// <param name="title">A title to show on the login screen</param>
-		/// <param name="tenant">Your tenant in Auth0 (usually {tenant}.auth0.com</param>
-		/// <param name="clientId">The Client Id for the application defined in Auth0</param>
-		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider</param>
-		/// <param name="callbackurl">The redirect_uri used to detect the end of the authentication transaction</param>
-		public Auth0Client (string title, string tenant, string clientId, string connection, Uri callbackurl = null) 
-			: this( title, string.Format(AuthorizeUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant)), connection), ValidateCallback(callbackurl, tenant))
-		{
-			this.clientId = clientId;
-			this.tenant = tenant;
-			this.connection = connection;
-		}
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="Auth0.SDK.Auth0Client"/> class, instructing it to show Auth0 Login Widget that will dynamically display all available connections.
@@ -48,17 +32,25 @@ namespace Auth0.SDK
 		/// <param name="tenant">Your tenant in Auth0 (usually {tenant}.auth0.com</param>
 		/// <param name="clientId">The Client Id for the application defined in Auth0</param>
 		/// <param name="callbackurl">The redirect_uri used to detect the end of the authentication transaction</param>
-		public Auth0Client (string title, string tenant, string clientId, Uri callbackurl = null)
-			: this( title, string.Format(LoginWidgetUrl, tenant, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, tenant))), ValidateCallback(callbackurl, tenant))
+		public Auth0Client (string subDomain, string clientId, Uri callbackurl = null)
+			: this(string.Format(LoginWidgetUrl, subDomain, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, subDomain))), ValidateCallback(callbackurl, subDomain))
 		{
+			this.subDomain = subDomain;
 			this.clientId = clientId;
-			this.tenant = tenant;
+		}
+
+		public Auth0Client (string subDomain, string clientId, string clientSecret, Uri callbackurl = null)
+			: this(string.Format(LoginWidgetUrl, subDomain, clientId, Uri.EscapeDataString (ValidateCallback(callbackurl, subDomain))), ValidateCallback(callbackurl, subDomain))
+		{
+			this.subDomain = subDomain;
+			this.clientId = clientId;
+			this.clientSecret = clientSecret;
 		}
 	
-		private Auth0Client(string title, string startUri, string callback )
+		private Auth0Client(string startUri, string callback )
 			: base( null, new Uri( callback ) )
 		{
-			this.Title = title;
+			this.Title = "Login";
 
 			var chars = new char[16];
 			var rand = new Random ();
@@ -71,36 +63,42 @@ namespace Auth0.SDK
 			this.startUrl = new Uri( startUri + "&state=" + this.state );
 		}
 
-		public override Task<Uri> GetInitialUrlAsync ()
+		/// <summary>
+		/// Logins the async.
+		/// </summary>
+		/// <param name="title">A title to show on the login screen.</param>
+		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
+		public Task<AuthenticationResult> LoginAsync(string title = "", string connection = "")
 		{
-			var tcs = new TaskCompletionSource<Uri> ();
-			tcs.SetResult (startUrl);
-			return tcs.Task;
+			throw new NotImplementedException ();
 		}
 
 		/// <summary>
-		/// Authenticate user from an specified connection with OAuth2 'Resource Owner Password Credentials Grant'
+		/// Login using OAuth2 'Resource Owner Password Credentials Grant'.
 		/// </summary>
-		/// <param name="clientSecret">The Client Secret for the application defined in Auth0</param>
-		/// <param name="userName">User name</param>
-		/// <param name="password">User password</param>
-		public void Authenticate(string clientSecret, string userName, string password)
+		/// <returns>Authentication result callback.</returns>
+		/// <param name="connection">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
+		/// <param name="userName">User name.</param>
+		/// <param name="password">User password.</param>
+		public Task<AuthenticationResult> LoginAsync(string connection, string userName, string password)
 		{
-			var endpoint = string.Format (ResourceOwnerEndpoint, tenant);
+			var endpoint = string.Format (ResourceOwnerEndpoint, this.subDomain);
 			var parameters = new Dictionary<string, string> 
 			{
-				{ "grant_type", "password" },
 				{ "client_id", this.clientId },
-				{ "client_secret", clientSecret },
-				{ "connection", this.connection },
+				{ "client_secret", this.clientSecret },
+				{ "connection", connection },
 				{ "username", userName },
 				{ "password", password },
+				{ "grant_type", "password" },
 				{ "scope", "openid profile" }
 			};
 
 			var request = new Request ("POST", new Uri(endpoint), parameters);
-			request.GetResponseAsync ().ContinueWith(t => 
+			return request.GetResponseAsync ().ContinueWith<AuthenticationResult>(t => 
 			{
+				var result = new AuthenticationResult(); // TODO: see t.Exception
+
 				try
 				{
 					var text = t.Result.GetResponseText();
@@ -108,22 +106,38 @@ namespace Auth0.SDK
 
 					if (data.ContainsKey ("error")) 
 					{
-						throw new AuthException ("Error authenticating: " + data["error"]);
+						result.Error = new AuthException ("Error authenticating: " + data["error"]);
 					} 
 					else if (data.ContainsKey ("access_token"))
 					{
-						this.OnRetrievedAccountProperties(data);
+						result.Success = true;
+						result.Auth0AccessToken = data["access_token"];
+						result.IdToken = data["id_token"];
+						result.User = data["id_token"].ToJson();
 					} 
 					else 
 					{
-						throw new AuthException ("Expected access_token in access token response, but did not receive one.");
+						result.Error = new AuthException ("Expected access_token in access token response, but did not receive one.");
 					}
+				}
+				catch (AggregateException ex)
+				{
+					result.Error = ex.Flatten();
 				}
 				catch (Exception ex)
 				{
-					this.OnError(ex);
+					result.Error = ex;
 				}
+
+				return result;
 			});
+		}
+
+		public override Task<Uri> GetInitialUrlAsync ()
+		{
+			var tcs = new TaskCompletionSource<Uri> ();
+			tcs.SetResult (startUrl);
+			return tcs.Task;
 		}
 
 		protected override void OnRedirectPageLoaded (Uri url, IDictionary<string, string> query, IDictionary<string, string> fragment)
@@ -172,8 +186,27 @@ namespace Auth0.SDK
 		}
 	}
 
+	public class AuthenticationResult
+	{
+		public bool Success { get; set; }
+
+		public string Auth0AccessToken { get; set; }
+
+		public string IdToken { get; set; }
+
+		public JObject User { get; set; }
+
+		public Exception Error { get; set; }
+	}
+
 	public static class Extensions
 	{
+		public static JObject ToJson(this string jsonString)
+		{
+			var decoded = Encoding.Default.GetString(jsonString.Base64UrlDecode());
+			return JObject.Parse(decoded);
+		}
+
 		public static JObject GetProfile(this Account account)
 		{
 			if (!account.Properties.ContainsKey ("id_token")) 
