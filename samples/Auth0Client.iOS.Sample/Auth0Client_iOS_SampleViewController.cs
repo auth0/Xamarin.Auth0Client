@@ -9,8 +9,8 @@ namespace Auth0Client.iOS.Sample
 {
 	public partial class Auth0Client_iOS_SampleViewController : DialogViewController
 	{
-		// You can obtain {tenant}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
-		private const string Tenant = "iaco2";
+		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard (https://app.auth0.com/#/settings)
+		private const string SubDomain = "iaco2";
 		private const string ClientID = "XviE9dLlREjXZduIzTqtsGsiZELjls8z";
 		private const string ClientSecret = "g-Xznc-5ccEqgTxEQZrLeE_8bCixQL4-_hDraMgty8ZGBSmz9KnYtWzqUlqFmhpy";
 
@@ -43,86 +43,61 @@ namespace Auth0Client.iOS.Sample
 		private void LoginWithWidgetButtonClick ()
 		{
 			// This will show all connections enabled in Auth0, and let the user choose the identity provider
-			var client = new Auth0.SDK.Auth0Client(
-				"Auth0", 						// title
-				Tenant, 						// tenant
-				ClientID); 						// clientID
+			var client = new Auth0.SDK.Auth0Client (
+				SubDomain, 								// subDomain
+				ClientID,								// clientID
+				ClientSecret);							// client secret
 
-			this.WireLogin(client);
+			client.LoginAsync (
+				this, 									// current controller
+				(result) => {							// onComplete handler
+					this.DismissViewController (true, null);
+					this.ShowResult (result);
+				});
 		}
 
 		private void LoginWithConnectionButtonClick ()
 		{
 			// This uses a specific connection: google-oauth2
-			var client = new Auth0.SDK.Auth0Client(
-				Tenant, 						// tenant
-				ClientID, 						// clientID
-				"google-oauth2");				// connection name
+			var client = new Auth0.SDK.Auth0Client (
+				SubDomain, 								// subDomain
+				ClientID,								// clientID
+				ClientSecret);							// client secret
 
-			this.WireLogin(client);
+			client.LoginAsync (
+				this, 									// current controller
+				connection: "google-oauth2",			// connection name
+				onComplete: (result) => {				// onComplete handler
+					this.DismissViewController (true, null);
+					this.ShowResult (result);
+				});
 		}
 
 		private void LoginWithUsernamePassword ()
 		{
 			this.View.Add (this.loadingOverlay);
 
-			var connection = "dbtest.com";		// connection name
+			var connection = "dbtest.com";				// connection name
 			var client = new Auth0.SDK.Auth0Client (
-				Tenant, 						// subDomain
-				ClientID,						// clientID
-				ClientSecret);					// client secret
+				SubDomain, 								// subDomain
+				ClientID,								// clientID
+				ClientSecret);							// client secret
 
 			client.LoginAsync (connection, this.userNameElement.Value, this.passwordElement.Value)
 				  .ContinueWith (t => {
-					InvokeOnMainThread(() => {
+					this.InvokeOnMainThread(() => {
                    		this.loadingOverlay.Hide ();
 						this.ShowResult (t.Result);
 					});
 				  });
 		}
 
-		private void WireLogin (Auth0.SDK.Auth0Client client, bool fromUsernamePassword = false)
-		{
-			client.Completed += (object sender, Xamarin.Auth.AuthenticatorCompletedEventArgs e) => 
-			{
-				if (e.IsAuthenticated) 
-				{
-					// All the information gathered from a successful authentication is available in e.Account
-					this.ShowResult(
-						accessToken: (string)e.Account.Properties["access_token"],
-						idToken: (string)e.Account.Properties["id_token"],
-						userName: (string)e.Account.GetProfile()["name"]);
-				}
-				else 
-				{
-					// The user cancelled
-					this.ShowResult(error: "User cancelled");
-				}
-			};
-
-			client.Error += (object sender, Xamarin.Auth.AuthenticatorErrorEventArgs e) => 
-			{
-				this.ShowResult(error: e.Message);
-			};
-
-			// Present the login UI
-			this.PresentViewController (client.GetUI (), true, null);
-		}
-
-		private void ShowResult(string accessToken = "", string idToken = "", string userName = "", string error = "")
-		{
-			this.loadingOverlay.Hide ();
-
-			// We presented the UI, so it's up to us to dimiss it on iOS
-			this.DismissViewController (true, null);
-
-			this.resultSectionRow.Caption = !string.IsNullOrWhiteSpace (error) ?
-				string.Format ("ERROR: {0}", error) :
-				string.Format ("Hi {0}!{3}{3}access_token: {1}{3}{3}id_token: {2}", userName, accessToken, idToken, Environment.NewLine);
-		}
-
 		private void ShowResult(AuthenticationResult result)
 		{
+			if (result.Error == null && !result.Success) {
+				result.Error = new Exception ("Authentication was canceled.");
+			}
+
 			this.resultSectionRow.Caption = !result.Success ?
 				string.Format (
 					"ERROR: {0}", 

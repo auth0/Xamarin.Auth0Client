@@ -48,6 +48,9 @@
     <Compile Include="..\Auth0Client\Auth0Client.cs">
       <Link>Auth0Client.cs</Link>
     </Compile>
+    <Compile Include="..\Auth0Client\Auth0Authenticator.cs">
+      <Link>Auth0Authenticator.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
