@@ -57,7 +57,7 @@ namespace Auth0Client.Android.Sample
 				var password = this.FindViewById<EditText> (Resource.Id.txtUserPassword).Text;
 
 				// This uses a specific connection which supports username/password authentication
-				this.client.LoginAsync ("dbtest.com", userName, password)
+				this.client.LoginAsync ("sql-azure-database", userName, password)
 					.ContinueWith (
 						task => this.ShowResult (task),
 						this.scheduler);

@@ -69,7 +69,7 @@ namespace Auth0Client.iOS.Sample
 			this.View.Add (this.loadingOverlay);
 
 			// This uses a specific connection which supports username/password authentication
-			this.client.LoginAsync ("dbtest.com", this.userNameElement.Value, this.passwordElement.Value)
+			this.client.LoginAsync ("sql-azure-database", this.userNameElement.Value, this.passwordElement.Value)
 						.ContinueWith (
 							task => this.ShowResult (task),
 							this.scheduler);
