@@ -29,33 +29,23 @@ To start with, we'd recommend using the __Login Widget__. Here is a snippet of c
 using Auth0.SDK;
 
 var auth0 = new Auth0Client(
-	"Login", 
-	"{Your Auth0 Subdomain}", 
-	"{Your ClientId in Auth0}");
+	"{subDomain}",
+	"{clientID}",
+	"{clientSecret}");
 
-// Attach to Completed event
-auth.Completed += (sender, eventArgs) => {
-	// We presented the UI, so it's up to us to dimiss it on iOS (ignore this line on Android)
-	// DismissViewController (true, null);
-	
-	if (eventArgs.IsAuthenticated) {
-		// Use **eventArgs.Account** to do wonderful things
-	} else {
-		// The user cancelled
-	}
-};
-
-// Show the UI
-// iOS      [ViewDidAppear]
-UINavigationControllers view = auth0.GetUI();
-PresentViewController(view, true, null);
-
-// Android  [OnCreate]
-Intents intent = auth0.GetUI(this);
-StartActivityForResult(intent, 42);
+// 'this' could be a Context object (Android) or UIViewController, UIView, UIBarButtonItem (iOS)
+auth0.LoginAsync (this)
+	 .ContinueWith(t => { 
+	 /* 
+	    Use t.Result to do wonderful things, e.g.: 
+	      - get user email => t.Result.Profile["email"].ToString()
+	      - get facebook/google/twitter/etc access token => t.Result.Profile["identities"][0]["access_token"]
+	      - get Windows Azure AD groups => t.Result.Profile["groups"]
+	      - etc.
+	*/ });
 ```
 
-> You can obtain the {subdomain} and the {clientId} from your application's settings page on the Auth0 Dashboard.
+> You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard.
 
 > `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
@@ -66,23 +56,31 @@ StartActivityForResult(intent, 42);
 If you know which identity provider you want to use, you can add a `connection` parameter to the constructor and the user will be sent straight to the specified `connection`:
 
 ```csharp
-using Auth0.SDK;
-// ...
-var auth = new Auth0Client (
-	"Login", 
-	"{Your Auth0 Subdomain}", 
-	"{Your ClientId in Auth0}",
-	"google-oauth2"); // connection name here
+auth0.LoginAsync (this, "google-oauth2") // connection name here
+	 .ContinueWith(t => { /* Use t.Result to do wonderful things */ });
 ```
 
 > connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
 
+## Option 3: Authentication with specific user name and password
+
+```csharp
+auth0.LoginAsync (
+	"sql-azure-database", 		// connection name here
+	"jdoe@foobar.com", 			// user name
+	"1234")						// password
+	 .ContinueWith(t => 
+	 { 
+	 	/* Use t.Result to do wonderful things */ 
+ 	 });
+```
+
 ## Accessing user information
 
-Upon successful authentication, the `Complete` event will fire. `Auth0Client` will set the `eventArgs.Account.Username` property to that obtained from the Identity Provider. You will also get the following attributes from `eventArgs.Account` property:
+`Auth0Client.LoginAsync` method returns a `System.Threading.Tasks.Task<Auth0User>` object that could be used in the `ContinueWith` method. You will also get the following attributes from `task.Result` property:
 
-* `eventArgs.Account.GetProfile()`: an extension method which returns a `Newtonsoft.Json.Linq.JObject` object (from [Json.NET component](http://components.xamarin.com/view/json.net/)) containing all available user attributes.
-* `eventArgs.Account.Properties["id_token"]`: is a Json Web Token (JWT) containing all of the user attributes and it is signed with your client secret. This is useful to call your APIs and flow the user identity.
-* `eventArgs.Account.Properties["access_token"]`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](link-accounts).
+* `Profile`: returns a `Newtonsoft.Json.Linq.JObject` object (from [Json.NET component](http://components.xamarin.com/view/json.net/)) containing all available user attributes (e.g.: `task.Result.Profile["email"].ToString()`).
+* `IdToken`: is a Json Web Token (JWT) containing all of the user attributes and it is signed with your client secret. This is useful to call your APIs and flow the user identity.
+* `Auth0AccessToken`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](link-accounts).
 
 > If you have the __Windows Azure Mobile Services__ (WAMS) add-on enabled, Auth0 will sign the JWT with WAMS `masterkey`. Also the JWT will be compatible with the format expected by WAMS. More on this is explained [here](https://docs.auth0.com/jwt#5).
