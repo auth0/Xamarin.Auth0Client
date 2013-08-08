@@ -32,6 +32,8 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
+> You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard.
+
 ## Authentication with your own UI
 
 ```csharp
