@@ -22,7 +22,14 @@ var auth0 = new Auth0Client(
 
 // 'this' could be a Context object (Android) or UIViewController, UIView, UIBarButtonItem (iOS)
 auth0.LoginAsync (this)
-	 .ContinueWith(t => { /* Use t.Result to do wonderful things */ });
+	 .ContinueWith(t => { 
+	 /* 
+	    Use t.Result to do wonderful things, e.g.: 
+	      - get user email => t.Result.Profile["email"].ToString()
+	      - get facebook/google/twitter/etc access token => t.Result.Profile["identities"][0]["access_token"]
+	      - get Windows Azure AD groups => t.Result.Profile["groups"]
+	      - etc.
+	*/ });
 ```
 
 ## Authentication with your own UI
