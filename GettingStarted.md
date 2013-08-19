@@ -1,12 +1,12 @@
-This tutorial explains how to integrate [Auth0](http://developers.auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
+This tutorial explains how to integrate **[Auth0](http://developers.auth0.com)** with a Xamarin application (iOS or Android).  Auth0 helps you:
 
-* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**. 
+* Add authentication with **[multiple authentication sources](https://docs.auth0.com/identityproviders)**, either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**. 
 * Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
 * Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
+* Support for generating signed **[Json Web Tokens](https://docs.auth0.com/jwt)** to call your APIs and **flow the user identity** securely.
 * Support for integrating with **Windows Azure Mobile Services backends**.
 * Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
+* Pull data from other sources and add it to the user profile, through **[JavaScript rules](https://docs.auth0.com/rules)**.
 
 The library is cross-platform, so once you learn it on iOS, you're all set on Android.
 
@@ -46,7 +46,7 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
-- You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard.
+> You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
 
 - `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
