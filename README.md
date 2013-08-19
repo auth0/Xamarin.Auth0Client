@@ -12,7 +12,7 @@ Build __Xamarin.Auth0Client.sln__ solution, [download](https://components.xamari
 
     mono xpkg/xamarin-component.exe create-manually Auth0Client-0.1.xam \ 
     --name="Auth0 SDK" \ 
-    --summary="Add login with Google, Facebook, Twitter, Amazon, GitHub, LinkedIn; Windows Azure AD, Google Apps, AD, and SAML; or username/pwd database. One API for all." \ 
+    --summary="Add login with Google, Facebook, Twitter, Amazon, GitHub, LinkedIn, 37Signals, Box; Windows Azure AD, Google Apps, AD, and SAML; or username/pwd database. One API for all." \ 
     --publisher="Auth0" \ 
     --website="http://developers.auth0.com" \ 
     --details="Details.md" \ 
