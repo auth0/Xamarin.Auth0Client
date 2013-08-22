@@ -32,7 +32,7 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
-> You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
+* You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
 
 ## Authentication with your own UI
 
@@ -41,7 +41,7 @@ auth0.LoginAsync (this, "google-oauth2") // connection name here
 	 .ContinueWith(t => { /* Use t.Result to do wonderful things */ });
 ```
 
-> connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
+* connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
 
 ## Authentication with specific user name and password
 
