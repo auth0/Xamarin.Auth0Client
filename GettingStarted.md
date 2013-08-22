@@ -46,7 +46,7 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
-> You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
+- You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
 
 - `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
@@ -63,7 +63,7 @@ auth0.LoginAsync (this, "google-oauth2") // connection name here
 
 - connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
 
-## Option 3: Authentication with specific user name and password
+## Option 3: Authentication with specific user name and password (only for providers that support this)
 
 ```csharp
 auth0.LoginAsync (
@@ -75,6 +75,8 @@ auth0.LoginAsync (
 	 	/* Use t.Result to do wonderful things */ 
  	 });
 ```
+
+- Providers supporting username/password auth are currently: Databases, Google, AD, ADFS
 
 ## Accessing user information
 
