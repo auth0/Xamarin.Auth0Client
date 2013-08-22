@@ -10,11 +10,14 @@ namespace Auth0Client.iOS.Sample
 {
 	public partial class Auth0Client_iOS_SampleViewController : DialogViewController
 	{
-		// You can obtain {subDomain}, {clientID} and {clientSecret} from your settings page in the Auth0 Dashboard
+		// ********** 
+		// IMPORTANT: these are demo credentials, and the settings will be reset periodically 
+		//            You can obtain your own at https://auth0.com when creating a Xamarin App in the dashboard
+		// ***********
 		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
-			"{subDomain}",
-			"{clientID}",
-			"{clientSecret}");
+			"contoso",
+			"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW",
+			"wbNk_qZi9jqHnj_CKpPasaTAFBaQHma3BnSkU2X00LkBVY_UvuIZ2U3PQG25zqpE");
 
 		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 
@@ -68,7 +71,7 @@ namespace Auth0Client.iOS.Sample
 			this.loadingOverlay = new LoadingOverlay (UIScreen.MainScreen.Bounds);
 			this.View.Add (this.loadingOverlay);
 
-			// This uses a specific connection which supports username/password authentication
+			// This uses a specific connection (named sql-azure-database in Auth0 dashboard) which supports username/password authentication
 			this.client.LoginAsync ("sql-azure-database", this.userNameElement.Value, this.passwordElement.Value)
 						.ContinueWith (
 							task => this.ShowResult (task),
