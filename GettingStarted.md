@@ -87,3 +87,10 @@ The `Auth0User` has the following properties:
 * `Auth0AccessToken`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](https://docs.auth0.com/link-accounts).
 
 - If you want to use __Windows Azure Mobile Services__ (WAMS) you should create a WAMS app in Auth0 and set the Master Key that you can get on the Windows Azure portal. Then you have change your Xamarin app to use the client id and secret of the WAMS app just created and set the callback of the WAMS app to be` https://{subDomain}.auth0.com/mobile`. Finally, you have to set the `MobileServiceAuthenticationToken` property of the `MobileServiceUser` with the `IdToken` property of `Auth0User`.
+
+## Running the samples
+
+Samples should run out of the box because we put DEMO keys.
+
+If you want to use your own credentials, here is a short tutorial on how to do it:
+https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md
