@@ -91,7 +91,7 @@ The `Auth0User` has the following properties:
 
 You can obtain a delegation token specifying the ID of the target client (`targetClientId`) and, optionally, an `IDictionary<string, string>` object (`options`) in order to include custom parameters like scope or id_token:
 
-~~~cs
+~~~csharp
 var targetClientId = "{TARGET_CLIENT_ID}";
 var options = new Dictionary<string, string>
 {
