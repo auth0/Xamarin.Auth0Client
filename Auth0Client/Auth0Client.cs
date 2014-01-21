@@ -17,6 +17,8 @@ namespace Auth0.SDK
 		private const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&scope=openid%20profile&redirect_uri={2}&response_type=token&connection={3}";
 		private const string LoginWidgetUrl = "https://{0}/login/?client={1}&scope=openid%20profile&redirect_uri={2}&response_type=token";
 		private const string ResourceOwnerEndpoint = "https://{0}/oauth/ro";
+		private const string DelegationEndpoint = "https://{0}/delegation";
+		private const string UserInfoEndpoint = "https://{0}/userinfo?access_token={1}";
 		private const string DefaultCallback = "https://{0}/mobile";
 
 		private readonly string domain;
@@ -97,9 +99,33 @@ namespace Auth0.SDK
 			WebAuthenticator.ClearCookies();
 		}
 
-		private void SetupCurrentUser (IDictionary<string, string> accountProperties)
+		private void SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
-			this.CurrentUser = new Auth0User (accountProperties);
+			var endpoint = string.Format(UserInfoEndpoint, this.domain, accountProperties["access_token"]);
+
+			var request = new Request ("GET", new Uri(endpoint));
+			request.GetResponseAsync ().ContinueWith (t => 
+			{
+					try
+					{
+						var text = t.Result.GetResponseText();
+
+						if (t.Result.StatusCode != System.Net.HttpStatusCode.OK)
+						{
+							throw new InvalidOperationException(text);
+						}
+
+						accountProperties.Add("profile", text);
+					}
+					catch (Exception ex)
+					{
+						throw ex;
+					}
+					finally
+					{
+						this.CurrentUser = new Auth0User(accountProperties);
+					}
+				}).Wait();
 		}
 
 		private WebRedirectAuthenticator GetAuthenticator(string connection)
