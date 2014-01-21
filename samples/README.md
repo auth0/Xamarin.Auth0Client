@@ -19,4 +19,4 @@ If you want to try with your own credentials you should:
 
 6. Copy paste the credentials used to initialize the `Auth0Client` class on `MainActivity.cs` or the iOS Controller.
 
-  ![ss-2013-08-22T15-23-45.png](http://blog.auth0.com.s3.amazonaws.com/ss-2013-08-22T15-23-45.png)
+  ![ss-2014-01-21T18-36-02.png](http://blog.auth0.com.s3.amazonaws.com/ss-2014-01-21T18-36-02.png)
