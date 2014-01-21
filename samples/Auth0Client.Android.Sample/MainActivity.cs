@@ -19,7 +19,7 @@ namespace Auth0Client.Android.Sample
 		//            You can obtain your own at https://auth0.com when creating a Xamarin App in the dashboard
 		// ***********
 		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
-			"contoso",
+			"contoso.auth0.com",
 			"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW");
 
 		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
