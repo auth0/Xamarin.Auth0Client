@@ -91,6 +91,59 @@ namespace Auth0.SDK
 		}
 
 		/// <summary>
+		/// Get a delegation token.
+		/// </summary>
+		/// <returns>Delegation token result.</returns>
+		/// <param name="targetClientId">Target client ID.</param>
+		/// <param name="options">Custom parameters.</param>
+		public Task<JObject> GetDelegationToken(string targetClientId, IDictionary<string, string> options = null)
+		{
+			var id_token = string.Empty;
+			options = options ?? new Dictionary<string, string> ();
+
+			// ensure id_token
+			if (options.ContainsKey ("id_token")) {
+				id_token = options ["id_token"];
+				options.Remove ("id_token");
+			} else {
+				id_token = this.CurrentUser.IdToken;
+			}
+
+			if (string.IsNullOrEmpty (id_token)) {
+				throw new InvalidOperationException (
+					"You need to login first or specify a value for id_token parameter.");
+			}
+
+			var endpoint = string.Format (DelegationEndpoint, this.domain);
+			var parameters = new Dictionary<string, string> 
+			{
+				{ "grant_type", "urn:ietf:params:oauth:grant-type:jwt-bearer" },
+				{ "id_token", id_token },
+				{ "target", targetClientId },
+				{ "client_id", this.clientId }
+			};
+
+			// custom parameters
+			foreach (var option in options) {
+				parameters.Add (option.Key, option.Value);
+			}
+
+			var request = new Request ("POST", new Uri(endpoint), parameters);
+			return request.GetResponseAsync ().ContinueWith<JObject>(t => 
+				{
+					try
+					{
+						var text = t.Result.GetResponseText();
+						return JObject.Parse(text);
+					}
+					catch (Exception)
+					{
+						throw;
+					}
+				});
+		}
+
+		/// <summary>
 		/// Log a user out of a Auth0 application.
 		/// </summary>
 		public void Logout()
