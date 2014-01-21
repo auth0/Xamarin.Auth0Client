@@ -20,8 +20,7 @@ namespace Auth0Client.Android.Sample
 		// ***********
 		private Auth0.SDK.Auth0Client client = new Auth0.SDK.Auth0Client (
 			"contoso",
-			"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW",
-			"wbNk_qZi9jqHnj_CKpPasaTAFBaQHma3BnSkU2X00LkBVY_UvuIZ2U3PQG25zqpE");
+			"HmqDkk9qtDgxsiSKpLKzc51xD75hgiRW");
 
 		private readonly TaskScheduler scheduler = TaskScheduler.FromCurrentSynchronizationContext();
 		private ProgressDialog progressDialog;

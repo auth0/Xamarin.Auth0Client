@@ -21,13 +21,11 @@ namespace Auth0.SDK
 
 		private readonly string subDomain;
 		private readonly string clientId;
-		private readonly string clientSecret;
 
-		public Auth0Client (string subDomain, string clientId, string clientSecret)
+		public Auth0Client (string subDomain, string clientId)
 		{
 			this.subDomain = subDomain;
 			this.clientId = clientId;
-			this.clientSecret = clientSecret;
 		}
 
 		public Auth0User CurrentUser { get; private set; }
@@ -53,7 +51,6 @@ namespace Auth0.SDK
 			var parameters = new Dictionary<string, string> 
 			{
 				{ "client_id", this.clientId },
-				{ "client_secret", this.clientSecret },
 				{ "connection", connection },
 				{ "username", userName },
 				{ "password", password },

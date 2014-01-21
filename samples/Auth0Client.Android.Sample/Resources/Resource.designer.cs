@@ -26,9 +26,7 @@ namespace Auth0Client.Android.Sample
 		
 		public static void UpdateIdValues()
 		{
-			Auth0.SDK.Resource.Drawable.monoandroidsplash = Auth0Client.Android.Sample.Resource.Drawable.monoandroidsplash;
-			Auth0.SDK.Resource.String.library_name = Auth0Client.Android.Sample.Resource.String.library_name;
-			Auth0.SDK.Resource.Style.Mono_Android_Theme_Splash = Auth0Client.Android.Sample.Resource.Style.Mono_Android_Theme_Splash;
+			global::Auth0.SDK.Resource.String.library_name = global::Auth0Client.Android.Sample.Resource.String.library_name;
 		}
 		
 		public partial class Attribute
