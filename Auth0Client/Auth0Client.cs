@@ -14,8 +14,8 @@ namespace Auth0.SDK
 	/// </summary>
 	public partial class Auth0Client
 	{
-		private const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&scope=openid%20profile&redirect_uri={2}&response_type=token&connection={3}";
-		private const string LoginWidgetUrl = "https://{0}/login/?client={1}&scope=openid%20profile&redirect_uri={2}&response_type=token";
+		private const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&redirect_uri={2}&response_type=token&connection={3}&scope={4}";
+		private const string LoginWidgetUrl = "https://{0}/login/?client={1}&redirect_uri={2}&response_type=token&scope={3}";
 		private const string ResourceOwnerEndpoint = "https://{0}/oauth/ro";
 		private const string DelegationEndpoint = "https://{0}/delegation";
 		private const string UserInfoEndpoint = "https://{0}/userinfo?access_token={1}";
@@ -128,7 +128,7 @@ namespace Auth0.SDK
 				}).Wait();
 		}
 
-		private WebRedirectAuthenticator GetAuthenticator(string connection)
+		private WebRedirectAuthenticator GetAuthenticator(string connection, string scope)
 		{
 			// Generate state to include in startUri
 			var chars = new char[16];
@@ -139,8 +139,8 @@ namespace Auth0.SDK
 
 			var redirectUri = this.CallbackUrl;
 			var authorizeUri = !string.IsNullOrWhiteSpace (connection) ?
-           		string.Format (AuthorizeUrl, domain, clientId, Uri.EscapeDataString (redirectUri), connection) :
-               	string.Format (LoginWidgetUrl, domain, clientId, Uri.EscapeDataString (redirectUri));
+           		string.Format(AuthorizeUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), connection, scope) :
+               	string.Format(LoginWidgetUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), scope);
 
 			var state = new string (chars);
 			var startUri = new Uri (authorizeUri + "&state=" + state);

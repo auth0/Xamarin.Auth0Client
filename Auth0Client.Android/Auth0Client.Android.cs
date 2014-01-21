@@ -18,19 +18,22 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="scope" type="string">
+		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (Context context, string connection = "")
+		public Task<Auth0User> LoginAsync (Context context, string connection = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(context, connection);
+			return this.SendLoginAsync(context, connection, scope);
 		}
 
-		private Task<Auth0User> SendLoginAsync(Context context, string connection)
+		private Task<Auth0User> SendLoginAsync(Context context, string connection, string scope)
 		{
 			// Launch server side OAuth flow using the GET endpoint
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = this.GetAuthenticator (connection);
+			var auth = this.GetAuthenticator (connection, scope);
 
 			auth.Error += (o, e) =>
 			{

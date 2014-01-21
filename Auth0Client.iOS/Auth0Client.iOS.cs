@@ -18,12 +18,15 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="scope" type="string">
+		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (UIViewController viewController, string connection = "")
+		public Task<Auth0User> LoginAsync (UIViewController viewController, string connection = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), viewController, connection);
+			return this.SendLoginAsync(default(RectangleF), viewController, connection, scope);
 		}
 
 		/// <summary>
@@ -38,12 +41,15 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="scope" type="string">
+		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (RectangleF rectangle, UIView view, string connection = "")
+		public Task<Auth0User> LoginAsync (RectangleF rectangle, UIView view, string connection = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(rectangle, view, connection);
+			return this.SendLoginAsync(rectangle, view, connection, scope);
 		}
 
 		/// <summary>
@@ -55,19 +61,22 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="scope" type="string">
+		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "")
+		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection);
+			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, scope);
 		}
 
-		private Task<Auth0User> SendLoginAsync(RectangleF rect, object view, string connection)
+		private Task<Auth0User> SendLoginAsync(RectangleF rect, object view, string connection, string scope)
 		{
 			// Launch server side OAuth flow using the GET endpoint
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = this.GetAuthenticator (connection);
+			var auth = this.GetAuthenticator (connection, scope);
 
 			UIViewController c = auth.GetUI();
 
