@@ -16,9 +16,8 @@ The library is cross-platform, so once you learn it on iOS, you're all set on An
 using Auth0.SDK;
 
 var auth0 = new Auth0Client(
-	"{subDomain}",
-	"{clientID}",
-	"{clientSecret}");
+	"{domain}",
+	"{clientID}");
 
 // 'this' could be a Context object (Android) or UIViewController, UIView, UIBarButtonItem (iOS)
 auth0.LoginAsync (this)
@@ -32,7 +31,7 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
-* You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
+* You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
 
 ## Authentication with your own UI
 

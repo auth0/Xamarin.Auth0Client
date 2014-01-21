@@ -30,9 +30,8 @@ To start with, we'd recommend using the __Login Widget__. Here is a snippet of c
 using Auth0.SDK;
 
 var auth0 = new Auth0Client(
-	"{subDomain}",
-	"{clientID}",
-	"{clientSecret}");
+	"{domain}",
+	"{clientID}");
 
 // 'this' could be a Context object (Android) or UIViewController, UIView, UIBarButtonItem (iOS)
 auth0.LoginAsync (this)
@@ -46,7 +45,7 @@ auth0.LoginAsync (this)
 	*/ });
 ```
 
-- You can obtain the {subDomain}, {clientID} and the {clientSecret} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
+- You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
 
 - `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
@@ -86,7 +85,26 @@ The `Auth0User` has the following properties:
 * `IdToken`: is a Json Web Token (JWT) containing all of the user attributes and it is signed with your client secret. This is useful to call your APIs and flow the user identity (or Windows Azure Mobile Services, see below).
 * `Auth0AccessToken`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](https://docs.auth0.com/link-accounts).
 
-- If you want to use __Windows Azure Mobile Services__ (WAMS) you should create a WAMS app in Auth0 and set the Master Key that you can get on the Windows Azure portal. Then you have change your Xamarin app to use the client id and secret of the WAMS app just created and set the callback of the WAMS app to be` https://{subDomain}.auth0.com/mobile`. Finally, you have to set the `MobileServiceAuthenticationToken` property of the `MobileServiceUser` with the `IdToken` property of `Auth0User`.
+- If you want to use __Windows Azure Mobile Services__ (WAMS) you should create a WAMS app in Auth0 and set the Master Key that you can get on the Windows Azure portal. Then you have change your Xamarin app to use the client id and secret of the WAMS app just created and set the callback of the WAMS app to be` https://{domain}/mobile`. Finally, you have to set the `MobileServiceAuthenticationToken` property of the `MobileServiceUser` with the `IdToken` property of `Auth0User`.
+
+## Delegation Token Request
+
+You can obtain a delegation token specifying the ID of the target client (`targetClientId`) and, optionally, an `IDictionary<string, string>` object (`options`) in order to include custom parameters like scope or id_token:
+
+~~~cs
+var targetClientId = "{TARGET_CLIENT_ID}";
+var options = new Dictionary<string, string>
+{
+    { "scope", "openid profile" },		// default: openid
+    { "id_token", "USER_ID_TOKEN" }		// default: id_token of the authenticated user (client.auth0User.IdToken)
+};
+
+auth0.GetDelegationToken(targetClientId, options)
+     .ContinueWith(t =>
+        {
+            // Call your API using t.Result["id_token"]
+        });
+~~~
 
 ## Running the samples
 
