@@ -3,4 +3,5 @@
 	<uses-sdk />
 	<application android:label="Auth0Client.Android.Sample">
 	</application>
+	<uses-permission android:name="android.permission.INTERNET" />
 </manifest>
