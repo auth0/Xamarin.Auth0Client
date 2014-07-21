@@ -152,6 +152,36 @@ namespace Auth0.SDK
 			WebAuthenticator.ClearCookies();
 		}
 
+		/// <summary>
+		/// Gets the WebRedirectAuthenticator.
+		/// </summary>
+		/// <returns>The authenticator.</returns>
+		/// <param name="connection">Connection name.</param>
+		/// <param name="scope">OpenID scope.</param>
+		protected virtual WebRedirectAuthenticator GetAuthenticator(string connection, string scope)
+		{
+			// Generate state to include in startUri
+			var chars = new char[16];
+			var rand = new Random ();
+			for (var i = 0; i < chars.Length; i++) {
+				chars [i] = (char)rand.Next ((int)'a', (int)'z' + 1);
+			}
+
+			var redirectUri = this.CallbackUrl;
+			var authorizeUri = !string.IsNullOrWhiteSpace (connection) ?
+				string.Format(AuthorizeUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), connection, scope) :
+				string.Format(LoginWidgetUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), scope);
+
+			var state = new string (chars);
+			var startUri = new Uri (authorizeUri + "&state=" + state);
+			var endUri = new Uri (redirectUri);
+
+			var auth = new WebRedirectAuthenticator (startUri, endUri);
+			auth.ClearCookiesBeforeLogin = false;
+
+			return auth;
+		}
+
 		private void SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
 			var endpoint = string.Format(UserInfoEndpoint, this.domain, accountProperties["access_token"]);
@@ -179,30 +209,6 @@ namespace Auth0.SDK
 						this.CurrentUser = new Auth0User(accountProperties);
 					}
 				}).Wait();
-		}
-
-		private WebRedirectAuthenticator GetAuthenticator(string connection, string scope)
-		{
-			// Generate state to include in startUri
-			var chars = new char[16];
-			var rand = new Random ();
-			for (var i = 0; i < chars.Length; i++) {
-				chars [i] = (char)rand.Next ((int)'a', (int)'z' + 1);
-			}
-
-			var redirectUri = this.CallbackUrl;
-			var authorizeUri = !string.IsNullOrWhiteSpace (connection) ?
-           		string.Format(AuthorizeUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), connection, scope) :
-               	string.Format(LoginWidgetUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), scope);
-
-			var state = new string (chars);
-			var startUri = new Uri (authorizeUri + "&state=" + state);
-			var endUri = new Uri (redirectUri);
-
-			var auth = new WebRedirectAuthenticator (startUri, endUri);
-			auth.ClearCookiesBeforeLogin = false;
-
-			return auth;
 		}
 	}
 }
