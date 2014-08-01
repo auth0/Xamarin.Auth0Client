@@ -1,12 +1,12 @@
-This tutorial explains how to integrate **[Auth0](http://developers.auth0.com)** with a Xamarin application (iOS or Android).  Auth0 helps you:
+This tutorial explains how to integrate [Auth0](http://developers.auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
 
-* Add authentication with **[multiple authentication sources](https://docs.auth0.com/identityproviders)**, either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed **[Json Web Tokens](https://docs.auth0.com/jwt)** to call your APIs and **flow the user identity** securely.
+* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
+* Add authentication through more traditional [username/password databases](https://docs.auth0.com/mysql-connection-tutorial).
+* Add support for [linking different user accounts](https://docs.auth0.com/link-accounts) with the same user.
+* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
 * Support for integrating with third party APIs **(AWS, Windows Azure Mobile Services, Firebase, Salesforce, and more!)**.
 * Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through **[JavaScript rules](https://docs.auth0.com/rules)**.
+* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
 
 The library is cross-platform, so once you learn it on iOS, you're all set on Android.
 
@@ -43,9 +43,8 @@ var user = await auth0.LoginAsync(this);
 */
 ```
 
-- You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
-
-- `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
+* You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
+* `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
 ![](https://docs.auth0.com/img/xamarin.auth0client.png)
 
@@ -57,7 +56,7 @@ If you know which identity provider you want to use, you can add a `connection` 
 var user = await auth0.LoginAsync(this, "google-oauth2"); // connection name here
 ```
 
-- connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
+* connection names can be found on Auth0 dashboard. E.g.: `facebook`, `linkedin`, `somegoogleapps.com`, `saml-protocol-connection`, etc.
 
 ## Option 3: Authentication with specific user name and password (only for providers that support this)
 
@@ -68,7 +67,7 @@ var user = await auth0.LoginAsync(
   "1234");             			// password
 ```
 
-- Providers supporting username/password auth are currently: Databases, Google, AD, ADFS
+* Providers supporting username/password auth are currently: Databases, Google, AD, ADFS
 
 ## Accessing user information
 
@@ -82,7 +81,7 @@ The `Auth0User` has the following properties:
 
 You can obtain a delegation token specifying the ID of the target client (`targetClientId`) and, optionally, an `IDictionary<string, string>` object (`options`) in order to include custom parameters like scope or id_token:
 
-~~~csharp
+```csharp
 var targetClientId = "{TARGET_CLIENT_ID}";
 var options = new Dictionary<string, string>
 {
@@ -92,11 +91,10 @@ var options = new Dictionary<string, string>
 
 var delegationToken = await auth0.GetDelegationToken(targetClientId, options);
 // Call your API using delegationToken["id_token"]
-~~~
+```
 
 ## Running the samples
 
 Samples should run out of the box because we put DEMO keys.
 
-If you want to use your own credentials, here is a short tutorial on how to do it:
-https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md
+If you want to use your own credentials, [here](https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md) is a short tutorial on how to do it.
