@@ -64,7 +64,7 @@ var user = await auth0.LoginAsync(this, "google-oauth2"); // connection name her
 var user = await auth0.LoginAsync(
   "sql-azure-database",   	// connection name here
   "jdoe@foobar.com",      	// user name
-  "1234");             			// password
+  "1234");             		// password
 ```
 
 * Providers supporting username/password auth are currently: Databases, Google, AD, ADFS
