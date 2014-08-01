@@ -1,12 +1,12 @@
-**[Auth0](http://developers.auth0.com)** is a cloud service that works as a Single Sign On hub between your apps and authentication sources. By adding Auth0 to your Xamarin app you can:
+[Auth0](http://developers.auth0.com) is a cloud service that works as a Single Sign On hub between your apps and authentication sources. By adding Auth0 to your Xamarin app you can:
 
-* Add authentication with **[multiple authentication sources](https://docs.auth0.com/identityproviders)**, either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
-* Add authentication through more traditional **[username/password databases](https://docs.auth0.com/mysql-connection-tutorial)**.
-* Add support for **[linking different user accounts](https://docs.auth0.com/link-accounts)** with the same user.
-* Support for generating signed **[Json Web Tokens](https://docs.auth0.com/jwt)** to call your APIs and **flow the user identity** securely.
+* Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
+* Add authentication through more traditional [username/password databases](https://docs.auth0.com/mysql-connection-tutorial).
+* Add support for [linking different user accounts](https://docs.auth0.com/link-accounts) with the same user.
+* Support for generating signed [Json Web Tokens](https://docs.auth0.com/jwt) to call your APIs and **flow the user identity** securely.
 * Support for integrating with third party APIs **(AWS, Windows Azure Mobile Services, Firebase, Salesforce, and more!)**.
 * Analytics of how, when and where users are logging in.
-* Pull data from other sources and add it to the user profile, through **[JavaScript rules](https://docs.auth0.com/rules)**.
+* Pull data from other sources and add it to the user profile, through [JavaScript rules](https://docs.auth0.com/rules).
 
 The library is cross-platform, so once you learn it on iOS, you're all set on Android.
 
@@ -43,9 +43,9 @@ var user = await auth0.LoginAsync(this, "google-oauth2"); // connection name her
 
 ```csharp
 var user = await auth0.LoginAsync(
-  "sql-azure-database",   // connection name here
-  "jdoe@foobar.com",      // user name
-  "1234");             		// password
+  "sql-azure-database", // connection name here
+  "jdoe@foobar.com",    // user name
+  "1234");             	// password
 ```
 
 Get more details on [our Xamarin tutorial](https://docs.auth0.com/xamarin-tutorial).
