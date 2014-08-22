@@ -30,6 +30,9 @@ namespace Auth0Client.iOS.Sample
 			var loginWithConnectionBtn = new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick) {
 				Alignment = UITextAlignment.Center
 			};
+			var refreshIdBtn = new StyledStringElement ("Get new ID with Refresh Token", this.RefreshUserId) {
+				Alignment = UITextAlignment.Center
+			};
 
 			var loginBtn = new StyledStringElement ("Login", this.LoginWithUsernamePassword) {
 				Alignment = UITextAlignment.Center
@@ -46,10 +49,14 @@ namespace Auth0Client.iOS.Sample
 			login2.Add (this.passwordElement = new EntryElement ("Password", string.Empty, string.Empty, true));
 			login2.Add (loginBtn);
 
+			var refresh = new Section ("Using refresh token");
+			refresh.Add (refreshIdBtn);
+
 			var result = new Section ("Result");
 			result.Add(this.resultElement);
 
-			this.Root.Add (new Section[] { login1, login2, result });
+			this.Root.Add (new Section[] { login1, login2, refresh, result });
 		}
+
 	}
 }
