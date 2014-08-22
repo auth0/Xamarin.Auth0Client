@@ -18,6 +18,12 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
+		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
@@ -42,6 +48,12 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
+		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
@@ -62,6 +74,12 @@ namespace Auth0.SDK
 		/// </param>
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
+		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
 		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.

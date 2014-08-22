@@ -100,7 +100,8 @@ namespace Auth0.SDK
         /// Renews the idToken (JWT)
         /// </summary>
         /// <returns>The refreshed token.</returns>
-        /// <param name="refreshToken">The refresh token</param>
+		/// <param name="targetClientId" type="string">The target client id. If null, the default client id is used.</param>
+        /// <param name="refreshToken" type="string">The refresh token to use. If null, the logged in users token will be used.</param>
         /// <param name="options">Additional parameters.</param>
         public async Task<JObject> RefreshToken(
             string targetClientId = "",
@@ -116,9 +117,13 @@ namespace Auth0.SDK
 			if (String.IsNullOrEmpty (targetClientId)) {
 				targetClientId = this.clientId;
 			}
+			if (string.IsNullOrEmpty (refreshToken)) {
+				refreshToken = this.CurrentUser.RefreshToken;
+			}
+
             return await this.GetDelegationToken(
                 targetClientId: targetClientId,
-                refreshToken: emptyToken ? this.CurrentUser.RefreshToken : refreshToken,
+				refreshToken: refreshToken,
                 options: options);
         }
 
@@ -126,7 +131,8 @@ namespace Auth0.SDK
 		/// Get a delegation token.
 		/// </summary>
 		/// <returns>Delegation token result.</returns>
-		/// <param name="targetClientId">Target client ID.</param>
+		/// <param name="refreshToken" type="string">The refresh token to use. If empty, normal delegation endpoint will be called.</param>
+		/// <param name="targetClientId" type="string">Target client ID.</param>
 		/// <param name="options">Custom parameters.</param>
 		public Task<JObject> GetDelegationToken(string targetClientId,
             string refreshToken = "",
@@ -219,6 +225,7 @@ namespace Auth0.SDK
 		/// <returns>The authenticator.</returns>
 		/// <param name="connection">Connection name.</param>
 		/// <param name="scope">OpenID scope.</param>
+		/// <param name="deviceName">The device name to use if gettting a refresh token.</param>
 		protected virtual WebRedirectAuthenticator GetAuthenticator(string connection, string scope, string deviceName = "")
 		{
 			// Generate state to include in startUri
