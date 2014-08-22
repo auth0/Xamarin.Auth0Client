@@ -18,15 +18,22 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
+		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (UIViewController viewController, string connection = "", string scope = "openid")
+        public Task<Auth0User> LoginAsync(UIViewController viewController, string connection = "", bool withRefreshToken = false,
+			string deviceName = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), viewController, connection, scope);
+			return this.SendLoginAsync(default(RectangleF), viewController, connection, scope, withRefreshToken, deviceName);
 		}
 
 		/// <summary>
@@ -41,15 +48,22 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
+		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (RectangleF rectangle, UIView view, string connection = "", string scope = "openid")
+        public Task<Auth0User> LoginAsync(RectangleF rectangle, UIView view, string connection = "", bool withRefreshToken = false,
+			string deviceName = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(rectangle, view, connection, scope);
+			return this.SendLoginAsync(rectangle, view, connection, scope, withRefreshToken, deviceName);
 		}
 
 		/// <summary>
@@ -61,22 +75,42 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">
 		/// The name of the connection to use in Auth0. Connection defines an Identity Provider.
 		/// </param>
+		/// <param name="withRefreshToken" type="bool">
+		/// Specifies if it should return a refresh token or not.
+		/// </param>
+		/// <param name="deviceName" type="string">
+		/// The name of the device to register the refresh token in the Auth0 dashboard.
+		/// </param>
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "", string scope = "openid")
+		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "" , bool withRefreshToken = false, 
+			string deviceName = "", string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, scope);
+			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, scope, withRefreshToken, deviceName);
 		}
 
-		private Task<Auth0User> SendLoginAsync(RectangleF rect, object view, string connection, string scope)
+        private static string IncreaseScopeWithOfflineAccess(bool withRefreshToken, string scope)
+        {
+            if (withRefreshToken && !scope.Contains("offline_access"))
+            {
+                scope += " offline_access";
+            }
+            return scope;
+        }
+
+		private Task<Auth0User> SendLoginAsync(RectangleF rect, object view, string connection,
+			string scope, bool withRefreshToken, string deviceName = "")
 		{
 			// Launch server side OAuth flow using the GET endpoint
+            scope = IncreaseScopeWithOfflineAccess(withRefreshToken, scope);
+
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = this.GetAuthenticator (connection, scope);
+			var auth = this.GetAuthenticator (connection, scope, deviceName);
+
 
 			UIViewController c = auth.GetUI();
 
@@ -99,6 +133,7 @@ namespace Auth0.SDK
 
 			auth.Completed += (o, e) =>
 			{
+
 				if (controller != null) {
 					controller.DismissViewController (true, null);
 				}
