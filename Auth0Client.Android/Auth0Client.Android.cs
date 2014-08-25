@@ -24,16 +24,26 @@ namespace Auth0.SDK
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (Context context, string connection = "", string scope = "openid")
+		public Task<Auth0User> LoginAsync (
+			Context context, 
+			string connection = "", 
+			bool withRefreshToken = false, 
+			string scope = "openid")
 		{
-			return this.SendLoginAsync(context, connection, scope);
+			return this.SendLoginAsync(context, connection, withRefreshToken, scope);
 		}
 
-		private Task<Auth0User> SendLoginAsync(Context context, string connection, string scope)
+		private async Task<Auth0User> SendLoginAsync(
+			Context context, 
+			string connection, 
+			bool withRefreshToken,
+			string scope)
 		{
 			// Launch server side OAuth flow using the GET endpoint
+			scope = IncreaseScopeWithOfflineAccess(withRefreshToken, scope);
+
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = this.GetAuthenticator (connection, scope);
+			var auth = await this.GetAuthenticator (connection, scope);
 
 			auth.Error += (o, e) =>
 			{
@@ -43,19 +53,20 @@ namespace Auth0.SDK
 
 			auth.Completed += (o, e) =>
 			{
-				if (!e.IsAuthenticated) {
+				if (!e.IsAuthenticated) 
+				{
 					tcs.TrySetCanceled();
+					return;
 				}
-				else {
-					this.SetupCurrentUser (e.Account.Properties);
-					tcs.TrySetResult (this.CurrentUser);
-				}
+
+				this.SetupCurrentUser (e.Account.Properties);
+				tcs.TrySetResult (this.CurrentUser);
 			};
 
 			Intent intent = auth.GetUI (context);
 			context.StartActivity (intent);
 
-			return tcs.Task;
+			return await tcs.Task;
 		}
 	}
 }

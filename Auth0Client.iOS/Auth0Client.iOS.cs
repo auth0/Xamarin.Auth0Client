@@ -30,10 +30,9 @@ namespace Auth0.SDK
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-        public Task<Auth0User> LoginAsync(UIViewController viewController, string connection = "", bool withRefreshToken = false,
-			string deviceName = "", string scope = "openid")
+		public Task<Auth0User> LoginAsync(UIViewController viewController, string connection = "", bool withRefreshToken = false, string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), viewController, connection, scope, withRefreshToken, deviceName);
+			return this.SendLoginAsync(default(RectangleF), viewController, connection, withRefreshToken, scope);
 		}
 
 		/// <summary>
@@ -61,9 +60,9 @@ namespace Auth0.SDK
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
         public Task<Auth0User> LoginAsync(RectangleF rectangle, UIView view, string connection = "", bool withRefreshToken = false,
-			string deviceName = "", string scope = "openid")
+			string scope = "openid")
 		{
-			return this.SendLoginAsync(rectangle, view, connection, scope, withRefreshToken, deviceName);
+			return this.SendLoginAsync(rectangle, view, connection, withRefreshToken, scope);
 		}
 
 		/// <summary>
@@ -88,28 +87,23 @@ namespace Auth0.SDK
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
 		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "" , bool withRefreshToken = false, 
-			string deviceName = "", string scope = "openid")
+			string scope = "openid")
 		{
-			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, scope, withRefreshToken, deviceName);
+			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, withRefreshToken, scope);
 		}
 
-        private static string IncreaseScopeWithOfflineAccess(bool withRefreshToken, string scope)
-        {
-            if (withRefreshToken && !scope.Contains("offline_access"))
-            {
-                scope += " offline_access";
-            }
-            return scope;
-        }
-
-		private Task<Auth0User> SendLoginAsync(RectangleF rect, object view, string connection,
-			string scope, bool withRefreshToken, string deviceName = "")
+		private async Task<Auth0User> SendLoginAsync(
+			RectangleF rect, 
+			object view, 
+			string connection,
+			bool withRefreshToken,
+			string scope)
 		{
 			// Launch server side OAuth flow using the GET endpoint
             scope = IncreaseScopeWithOfflineAccess(withRefreshToken, scope);
 
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = this.GetAuthenticator (connection, scope, deviceName);
+			var auth = await this.GetAuthenticator (connection, scope);
 
 
 			UIViewController c = auth.GetUI();
@@ -172,7 +166,7 @@ namespace Auth0.SDK
 				}
 			}
 
-			return tcs.Task;
+			return await tcs.Task;
 		}
 	}
 }
