@@ -54,7 +54,11 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
 		/// <param name="userName" type="string">User name.</param>
 		/// <param name="password type="string"">User password.</param>
-		public Task<Auth0User> LoginAsync(string connection, string userName, string password, bool withRefreshToken = false)
+		public Task<Auth0User> LoginAsync(string connection, 
+			string userName, 
+			string password, 
+			bool withRefreshToken = false,
+			string scope = "openid")
 		{
 
 			var endpoint = string.Format (ResourceOwnerEndpoint, this.domain);
@@ -65,7 +69,7 @@ namespace Auth0.SDK
 				{ "username", userName },
 				{ "password", password },
 				{ "grant_type", "password" },
-				{ "scope",  IncreaseScopeWithOfflineAccess(withRefreshToken, "openid profile") }
+				{ "scope",  IncreaseScopeWithOfflineAccess(withRefreshToken, scope) }
 			};
 
 			var request = new Request ("POST", new Uri(endpoint), parameters);
@@ -266,7 +270,7 @@ namespace Auth0.SDK
 				string.Format(AuthorizeUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), connection, scope) :
 				string.Format(LoginWidgetUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), scope);
 
-			if (scope.Contains("offline_access"))
+			if (ScopeHasOfflineAccess("offline_access"))
 			{
 				var deviceId = Uri.EscapeDataString(await this.DeviceIdProvider.GetDeviceId());
 				authorizeUri += string.Format("&device={0}", deviceId);
@@ -284,11 +288,19 @@ namespace Auth0.SDK
 
 		private static string IncreaseScopeWithOfflineAccess(bool withRefreshToken, string scope)
 		{
-			if (withRefreshToken && !scope.Contains("offline_access"))
+			if (withRefreshToken && !ScopeHasOfflineAccess(scope))
 			{
 				scope += " offline_access";
 			}
+
 			return scope;
+		}
+
+		private static bool ScopeHasOfflineAccess(string scope)
+		{
+			return scope
+				.Split(new string[0], StringSplitOptions.RemoveEmptyEntries)
+				.Any(e => e.Equals("offline_access", StringComparison.InvariantCultureIgnoreCase));
 		}
 
 		private void SetupCurrentUser(IDictionary<string, string> accountProperties)
