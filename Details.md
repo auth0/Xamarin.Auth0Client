@@ -49,3 +49,65 @@ var user = await auth0.LoginAsync(
 ```
 
 Get more details on [our Xamarin tutorial](https://docs.auth0.com/xamarin-tutorial).
+
+## Delegation Token Request
+
+You can obtain a delegation token specifying the ID of the target client (`targetClientId`) and, optionally, an `IDictionary<string, string>` object (`options`) in order to include custom parameters like scope or id_token:
+
+```csharp
+var options = new Dictionary<string, string>
+{
+    { "scope", "openid profile" },      // default: openid
+};
+
+var result = await auth0.GetDelegationToken(
+  targetClientId: "{TARGET_CLIENT_ID}", // defaults to: ""
+  idToken: "{USER_ID_TOKEN}", // defaults to: id_token of the authenticated user (auth0 CurrentUser.IdToken)
+  options: options);
+
+// id_token available throug result["id_token"]
+```
+
+## Renew id_token if not expired
+
+If the id_token of the logged in user has not expired (["exp" claim](http://self-issued.info/docs/draft-ietf-oauth-json-web-token.html#expDef)) you can renew it by calling:
+
+```csharp
+var options = new Dictionary<string, string>
+{
+    { "scope", "openid profile" }, // default: passthrough i.e. same as previous time token was asked for
+};
+
+auth0.RenewIdToken(options: options);
+```
+
+## Checking if the id_token has expired
+
+You can check if the `id_token` for the current user has expired using the following code:
+
+```csharp
+bool expired = auth0.HasTokenExpired();
+```
+
+If you want to check if a different `id_token` has expired you can use this snippet:
+```csharp
+string idToken = // get if from somewhere...
+bool expired = TokenValidator.HasTokenExpired(idToken);
+```
+
+## Refresh id_token using refresh_token
+
+You can obtain a `refresh_token` which **never expires** (unless explicitly revoked) and use it to renew the `id_token`.
+
+To do that you need to first explicitly request it when logging in:
+```csharp
+var user = await auth0.LoginAsync(withRefreshToken: true);
+var refreshToken = user.RefreshToken;
+```
+
+You should store that token in a safe place. The next time, instead of asking the user to log in you will be able to use the following code to get the `id_token`:
+```csharp
+var refreshToken = // retrieve from safe place
+var result = await auth0.RefreshToken(refreshToken);
+// access to result["id_token"];
+```
