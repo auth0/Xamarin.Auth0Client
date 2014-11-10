@@ -34,7 +34,7 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\json.net-4.5.11\lib\ios\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.iOS">
       <HintPath>..\Components\xamarin.auth-1.2.2\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
@@ -44,6 +44,7 @@
     <Folder Include="Resources\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
   <ItemGroup>
     <Compile Include="..\Auth0Client\Auth0User.cs">
       <Link>Auth0User.cs</Link>
@@ -61,10 +62,9 @@
     <Compile Include="DeviceIdProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="json.net">
-      <Version>4.5.11</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
       <Version>1.2.2</Version>
       <Visible>False</Visible>

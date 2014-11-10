@@ -39,7 +39,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\packages\Newtonsoft.Json.6.0.6\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.Android">
       <HintPath>..\Components\xamarin.auth-1.2.2\lib\android\Xamarin.Auth.Android.dll</HintPath>
@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\values\Strings.xml" />
@@ -72,10 +73,6 @@
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
       <Version>1.2.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
-    <XamarinComponentReference Include="json.net">
-      <Version>4.5.11</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>

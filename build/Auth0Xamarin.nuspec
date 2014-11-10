@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Auth0Xamarin</id>
+    <version>0.1.0</version>
+    <authors>Auth0</authors>
+    <description>A cross-platform API for authenticating users with the Auth0 platform</description>
+    <language>en-US</language>
+    <licenseUrl>https://raw.githubusercontent.com/auth0/Xamarin.Auth0Client/master/License.md</licenseUrl>
+    <projectUrl>https://github.com/auth0/Xamarin.Auth0Client</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <dependencies>
+      <dependency id="Newtonsoft.Json" version="6.0.0" />
+      <dependency id="xamstore-xamarin.auth" version="1.2.2"/>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="../bin/Auth0Client.Android.dll" target="lib/MonoAndroid22"/>
+    <file src="../bin/Auth0Client.iOS.dll" target="lib/MonoTouch10"/>
+  </files>
+
+</package>
