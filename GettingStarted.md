@@ -77,24 +77,10 @@ The `Auth0User` has the following properties:
 * `IdToken`: is a Json Web Token (JWT) containing all of the user attributes and it is signed with your client secret. This is useful to call your APIs and flow the user identity.
 * `Auth0AccessToken`: the `access_token` that can be used to access Auth0's API. You would use this for example to [link user accounts](https://docs.auth0.com/link-accounts).
 
-## Delegation Token Request
-
-You can obtain a delegation token specifying the ID of the target client (`targetClientId`) and, optionally, an `IDictionary<string, string>` object (`options`) in order to include custom parameters like scope or id_token:
-
-```csharp
-var targetClientId = "{TARGET_CLIENT_ID}";
-var options = new Dictionary<string, string>
-{
-    { "scope", "openid profile" },		// default: openid
-    { "id_token", "USER_ID_TOKEN" }		// default: id_token of the authenticated user (client.auth0User.IdToken)
-};
-
-var delegationToken = await auth0.GetDelegationToken(targetClientId, options);
-// Call your API using delegationToken["id_token"]
-```
+---
 
 ## Running the samples
 
-Samples should run out of the box because we put DEMO keys.
+Samples should run out of the box because they use DEMO keys.
 
 If you want to use your own credentials, [here](https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md) is a short tutorial on how to do it.

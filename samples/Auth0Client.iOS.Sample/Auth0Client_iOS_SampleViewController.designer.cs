@@ -27,7 +27,19 @@ namespace Auth0Client.iOS.Sample
 				Alignment = UITextAlignment.Center
 			};
 
+			var loginWithWidgetAndRefreshTokenBtn = new StyledStringElement ("Login with Widget & refresh_token", this.LoginWithWidgetUsingRefreshTokenButtonClick) {
+				Alignment = UITextAlignment.Center
+			};
+
 			var loginWithConnectionBtn = new StyledStringElement ("Login with Google", this.LoginWithConnectionButtonClick) {
+				Alignment = UITextAlignment.Center
+			};
+
+			var refreshJwtWithIdTokenBtn = new StyledStringElement ("Get new ID using id_token", this.RefreshIdTokenWithIdToken) {
+				Alignment = UITextAlignment.Center
+			};
+
+			var refreshJwtWithRefreshTokenBtn = new StyledStringElement ("Get new ID using refresh_token", this.RefreshIdTokenWithRefreshToken) {
 				Alignment = UITextAlignment.Center
 			};
 
@@ -39,6 +51,7 @@ namespace Auth0Client.iOS.Sample
 
 			var login1 = new Section ("Login");
 			login1.Add (loginWithWidgetBtn);
+			login1.Add (loginWithWidgetAndRefreshTokenBtn);
 			login1.Add (loginWithConnectionBtn);
 
 			var login2 = new Section ("Login with user/password");
@@ -46,10 +59,15 @@ namespace Auth0Client.iOS.Sample
 			login2.Add (this.passwordElement = new EntryElement ("Password", string.Empty, string.Empty, true));
 			login2.Add (loginBtn);
 
+			var refresh = new Section ("Using refresh token");
+			refresh.Add (refreshJwtWithIdTokenBtn);
+			refresh.Add (refreshJwtWithRefreshTokenBtn);
+
 			var result = new Section ("Result");
 			result.Add(this.resultElement);
 
-			this.Root.Add (new Section[] { login1, login2, result });
+			this.Root.Add (new Section[] { login1, login2, refresh, result });
 		}
+
 	}
 }

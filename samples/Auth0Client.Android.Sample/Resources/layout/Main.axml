@@ -19,6 +19,15 @@
     </TableRow>
     <TableRow>
         <Button
+            android:id="@+id/loginWithWidgetAndRefreshToken"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Login with Widget &amp; refresh_token"
+            android:gravity="center" />
+    </TableRow>
+    <TableRow>
+        <Button
             android:id="@+id/loginWithConnection"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
@@ -61,6 +70,29 @@
     <View
         android:layout_height="2dip"
         android:background="#FF909090" />
+    <TableRow>
+        <TextView
+            android:text="Result"
+            android:layout_span="2" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/refreshWithIdToken"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Refresh with id_token"
+            android:gravity="center" />
+    </TableRow>
+    <TableRow>
+        <Button
+            android:id="@+id/refreshWithRefreshToken"
+            android:layout_width="match_parent"
+            android:layout_height="fill_parent"
+            android:layout_span="2"
+            android:text="Refresh with refresh_token"
+            android:gravity="center" />
+    </TableRow>
     <TableRow>
         <TextView
             android:text="Result"
