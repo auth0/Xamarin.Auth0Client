@@ -15,3 +15,7 @@ Build __Xamarin.Auth0Client.sln__ solution, [download](https://components.xamari
 This will create a component package named __Auth0Client-0.4.xam__, which will include libraries and samples for iOS and Android, along with the required supplementary files.
 
 For detailed instructions, see the [component packaging guidelines](https://components.xamarin.com/guidelines).
+
+## Issue Reporting
+
+If you have found a bug or if you have a feature request, please report them at this repository issues section. Please do not report security vulnerabilities on the public GitHub issue tracker. The [Responsible Disclosure Program](https://auth0.com/whitehat) details the procedure for disclosing security issues.
