@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">iPhoneSimulator</Platform>
-    <ProductVersion>10.0.0</ProductVersion>
+    <ProductVersion>8.0.30703</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{AEABCA29-E9F7-4C17-B25F-3C207827C144}</ProjectGuid>
     <ProjectTypeGuids>{6BC8ED88-2882-458C-8E55-DFD12B67127B};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -81,9 +81,6 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="MonoTouch.Dialog-1" />
-    <Reference Include="Auth0Client.iOS">
-      <HintPath>..\..\bin\Auth0Client.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Xamarin.Auth.iOS">
       <HintPath>..\..\bin\Xamarin.Auth.iOS.dll</HintPath>
     </Reference>
@@ -107,4 +104,11 @@
     <Compile Include="LoadingOverlay.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.MonoTouch.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auth0Client.iOS\Auth0Client.iOS.csproj">
+      <Project>{73FADD05-A3BA-48A1-BB03-EAA19CA9782B}</Project>
+      <Name>Auth0Client.iOS</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
