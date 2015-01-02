@@ -6,7 +6,7 @@
 
 If you want to try with your own credentials you should:
 
-1. Go to <https://developers.auth0.com>
+1. Go to <https://auth0.com>
 2. Signup using GitHub, Google or Microsoft Account.
 3. Choose your subdomain (e.g. mycompany.auth0.com).
 4. Create a new application from Apps / APIs section.
