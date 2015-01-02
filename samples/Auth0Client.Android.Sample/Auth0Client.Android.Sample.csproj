@@ -42,9 +42,6 @@
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
-    <Reference Include="Auth0Client.Android">
-      <HintPath>..\..\bin\Auth0Client.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\bin\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -68,4 +65,10 @@
     <AndroidResource Include="Resources\drawable\Icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\..\Auth0Client.Android\Auth0Client.Android.csproj">
+      <Project>{81864EA2-C020-4B1F-82E5-0634DD071084}</Project>
+      <Name>Auth0Client.Android</Name>
+    </ProjectReference>
+  </ItemGroup>
 </Project>
