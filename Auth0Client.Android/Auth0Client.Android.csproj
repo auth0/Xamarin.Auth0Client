@@ -14,6 +14,7 @@
     <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
     <AndroidResgenClass>Resource</AndroidResgenClass>
     <AssemblyName>Auth0Client.Android</AssemblyName>
+    <TargetFrameworkVersion>v2.3</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -42,7 +43,7 @@
       <HintPath>..\Components\json.net-4.5.11\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.Android">
-      <HintPath>..\Components\xamarin.auth-1.2.2\lib\android\Xamarin.Auth.Android.dll</HintPath>
+      <HintPath>..\Components\xamarin.auth-1.2.3\lib\android\Xamarin.Auth.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -70,12 +71,12 @@
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Novell\Novell.MonoDroid.CSharp.targets" />
   <ItemGroup>
-    <XamarinComponentReference Include="xamarin.auth">
-      <Version>1.2.2</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="json.net">
       <Version>4.5.11</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="xamarin.auth">
+      <Version>1.2.3</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
