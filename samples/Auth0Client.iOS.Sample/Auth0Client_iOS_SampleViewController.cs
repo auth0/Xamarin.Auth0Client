@@ -57,7 +57,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
@@ -78,7 +78,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
@@ -96,7 +96,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
@@ -114,7 +114,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
@@ -132,7 +132,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
@@ -154,7 +154,7 @@ namespace Auth0Client.iOS.Sample
 			}
 			catch (AggregateException e)
 			{
-				SetResultText(e.Flatten().Message);
+				this.SetResultText(e.Flatten().Message);
 			}
 			catch (Exception e)
 			{
