@@ -11,7 +11,7 @@ If you want to try with your own credentials you should:
 3. Choose your subdomain (e.g. mycompany.auth0.com).
 4. Create a new application from Apps / APIs section.
 5. Copy paste the client id / client secret used to initialize the `Auth0Client` class on `MainActivity.cs` or the iOS Controller.
-6. Register the following Callback URL on the Application Settings section:
+6. Register the following `Allowed Callback URL` on the Application Settings section:
 
 ```
 https://{YOUR_SUBDOMAIN}.auth0.com/mobile
