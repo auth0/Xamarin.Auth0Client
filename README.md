@@ -6,10 +6,10 @@ A cross-platform API for authenticating users with the [Auth0 platform](http://a
 ## Generate and publish new Xamarin Component
 
 1. Build __Xamarin.Auth0Client.sln__ solution
-2. Download the [xamarin-component command line tool](https://components.xamarin.com/submit/xpkg) and run the following script (replacing `Auth0Client-0.X.xam` with specific version number):
+2. Download the [xamarin-component command line tool](https://components.xamarin.com/submit/xpkg) and run the following script (replacing `Auth0Client-X.Y.xam` with specific version number):
 
 ```
-mono xpkg/xamarin-component.exe create-manually Auth0Client-0.X.xam \
+mono xpkg/xamarin-component.exe create-manually Auth0Client-X.Y.xam \
   --name="Auth0 SDK" \
   --summary="Add authentication with different sources, either social like Google, Facebook, Twitter, or enterprise like WAAD, Google Apps, AD, ADFS or any SAML Provider." \
   --publisher="Auth0" \
@@ -31,7 +31,7 @@ mono xpkg/xamarin-component.exe create-manually Auth0Client-0.X.xam \
 
 > For detailed instructions, see the [component packaging guidelines](https://components.xamarin.com/guidelines).
 
-* This will create a component package named __Auth0Client-0.X.xam__, which will include libraries and samples for iOS and Android, along with the required supplementary files.
+* This will create a component package named __Auth0Client-X.Y.xam__, which will include libraries and samples for iOS and Android, along with the required supplementary files.
 * You are ready to upload the new `Auth0Client-0.X.xam` package to https://components.xamarin.com/admin/new/877
 
 ## Issue Reporting
