@@ -1,4 +1,4 @@
-This tutorial explains how to integrate [Auth0](http://developers.auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
+This tutorial explains how to integrate [Auth0](http://auth0.com) with a Xamarin application (iOS or Android).  Auth0 helps you:
 
 * Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
 * Add authentication through more traditional [username/password databases](https://docs.auth0.com/mysql-connection-tutorial).
