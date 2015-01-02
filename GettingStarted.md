@@ -12,19 +12,19 @@ The library is cross-platform, so once you learn it on iOS, you're all set on An
 
 ## Create a free account in Auth0
 
-1. Go to [Auth0](http://developers.auth0.com) and click Sign Up.
+1. Go to [Auth0](http://auth0.com) and click Sign Up.
 2. Create a new Application from dashboard.
-3. Go to the Application Settings section and make sure that __App Callbacks URLs__ has the following value: `https://{YOUR_AUTH0_DOMAIN}/mobile`
+3. Go to the Application Settings section and make sure that __Allowed Callback URLs__ has the following value: `https://{YOUR_AUTH0_DOMAIN}/mobile`
 
 There are three options to do the integration: 
 
-1. Using the [Auth0 Login Widget](https://docs.auth0.com/login-widget) inside a Web View (this is the simplest with only a few lines of code required).
+1. Using the [Auth0 Lock](https://docs.auth0.com/lock) widget inside a Web View (this is the simplest with only a few lines of code required).
 2. Creating your own UI (more work, but higher control the UI and overall experience).
 3. Using specific user name and password.
 
 ## Option 1: Authentication using Login Widget
 
-To start with, we'd recommend using the __Login Widget__. Here is a snippet of code to copy & paste on your project: 
+To start with, we'd recommend using the __Auth0 Lock__ widget. Here is a snippet of code to copy & paste on your project: 
 
 ```csharp
 using Auth0.SDK;
@@ -43,10 +43,11 @@ var user = await auth0.LoginAsync(this);
 */
 ```
 
-* You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://developers.auth0.com>.
-* `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the Xamarin.Auth component. All rules for standard authenticators apply regarding how the UI will be displayed.
+* In order to request a `refresh token`, use `auth0.LoginAsync(this, withRefreshToken: true)` ([see details](https://auth0.com/docs/refresh-token)).
+* You can obtain the `{domain}` and `{clientID}` from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation at <https://auth0.com>.
+* `Xamarin.Auth0Client` is built on top of the `WebRedirectAuthenticator` in the `Xamarin.Auth` component. All rules for standard authenticators apply regarding how the UI will be displayed.
 
-![](https://docs.auth0.com/img/xamarin.auth0client.png)
+![](https://cdn.auth0.com/docs/img/xamarin.auth0client.png)
 
 ## Option 2: Authentication with your own UI
 
@@ -80,7 +81,6 @@ The `Auth0User` has the following properties:
 ---
 
 ## Running the samples
-
 Samples should run out of the box because they use DEMO keys.
 
-If you want to use your own credentials, [here](https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md) is a short tutorial on how to do it.
+> If you want to use your own credentials, [here](https://github.com/auth0/Xamarin.Auth0Client/blob/master/samples/README.md) is a short tutorial on how to do it.
