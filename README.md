@@ -5,11 +5,11 @@ A cross-platform API for authenticating users with the [Auth0 platform](http://a
 
 ## Generate and publish new Xamarin Component
 
-1. Build __Xamarin.Auth0Client.sln__ solution
+1. Build __Xamarin.Auth0Client.sln__ solution (with __RELEASE mode__)
 2. Download the [xamarin-component command line tool](https://components.xamarin.com/submit/xpkg) and run the following script (replacing `Auth0Client-X.Y.xam` with specific version number):
 
 ```
-mono xpkg/xamarin-component.exe create-manually Auth0Client-X.Y.xam \
+mono xamarin-component.exe create-manually Auth0Client-X.Y.xam \
   --name="Auth0 SDK" \
   --summary="Add authentication with different sources, either social like Google, Facebook, Twitter, or enterprise like WAAD, Google Apps, AD, ADFS or any SAML Provider." \
   --publisher="Auth0" \
@@ -19,13 +19,17 @@ mono xpkg/xamarin-component.exe create-manually Auth0Client-X.Y.xam \
   --getting-started="GettingStarted.md" \
   --icon="icons/Auth0Client_128x128.png" \
   --icon="icons/Auth0Client_512x512.png" \
-  --library="ios":"bin/Auth0Client.iOS.dll" \
-  --library="android":"bin/Auth0Client.Android.dll" \
-  --library="ios":"bin/Xamarin.Auth.iOS.dll" \
-  --library="android":"bin/Xamarin.Auth.Android.dll" \
-  --library="ios":"bin/Newtonsoft.Json.dll" \
-  --library="android":"bin/Newtonsoft.Json.dll" \
-  --sample="iOS Sample. Demonstrates Auth0 authentication on iOS.":"samples/Auth0Client.iOS.Sample.sln" \
+  --library="ios":"Auth0Client.iOS/bin/classic/Release/Auth0Client.iOS.dll" \
+  --library="ios-unified":"Auth0Client.iOS/bin/unified/Release/Auth0Client.iOS.dll" \
+  --library="android":"Auth0Client.Android/bin/Release/Auth0Client.Android.dll" \
+  --library="ios":"Auth0Client.iOS/bin/classic/Release/Xamarin.Auth.iOS.dll" \
+  --library="ios-unified":"Auth0Client.iOS/bin/unified/Release/Xamarin.Auth.iOS.dll" \
+  --library="android":"Auth0Client.Android/bin/Release/Xamarin.Auth.Android.dll" \
+  --library="ios":"Auth0Client.iOS/bin/classic/Release/Newtonsoft.Json.dll" \
+  --library="ios-unified":"Auth0Client.iOS/bin/unified/Release/Newtonsoft.Json.dll" \
+  --library="android":"Auth0Client.Android/bin/Release/Newtonsoft.Json.dll" \
+  --sample="iOS Sample (Classic). Demonstrates Auth0 authentication on iOS (Classic).":"samples/Auth0Client.iOS.Sample-Classic.sln" \
+  --sample="iOS Sample (Unified API). Demonstrates Auth0 authentication on iOS (Unified API).":"samples/Auth0Client.iOS.Sample.sln" \
   --sample="Android Sample. Demonstrates Auth0 authentication on Android":"samples/Auth0Client.Android.Sample.sln"
 ```
 
