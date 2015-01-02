@@ -1,4 +1,4 @@
-[Auth0](http://developers.auth0.com) is a cloud service that works as a Single Sign On hub between your apps and authentication sources. By adding Auth0 to your Xamarin app you can:
+[Auth0](http://auth0.com) is a cloud service that works as a Single Sign On hub between your apps and authentication sources. By adding Auth0 to your Xamarin app you can:
 
 * Add authentication with [multiple authentication sources](https://docs.auth0.com/identityproviders), either social like **Google, Facebook, Microsoft Account, LinkedIn, GitHub, Twitter, Box, 37Signals**, or enterprise identity systems like **Windows Azure AD, Google Apps, AD, ADFS or any SAML Identity Provider**.
 * Add authentication through more traditional [username/password databases](https://docs.auth0.com/mysql-connection-tutorial).
@@ -29,7 +29,8 @@ var user = await auth0.LoginAsync(this);
 */
 ```
 
-* You can obtain the {domain} and {clientID} from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
+* In order to request a `refresh token`, use `auth0.LoginAsync(this, withRefreshToken: true)` ([see details](https://auth0.com/docs/refresh-token)).
+* You can obtain the `{domain}` and `{clientID}` from your application's settings page on the Auth0 Dashboard. You need to subscribe to Auth0 to get these values. The sample will not work with invalid or missing parameters. You can get a free subscription for testing and evaluation.
 
 ## Authentication with your own UI
 
@@ -100,12 +101,14 @@ bool expired = TokenValidator.HasTokenExpired(idToken);
 You can obtain a `refresh_token` which **never expires** (unless explicitly revoked) and use it to renew the `id_token`.
 
 To do that you need to first explicitly request it when logging in:
+
 ```csharp
-var user = await auth0.LoginAsync(withRefreshToken: true);
+var user = await auth0.LoginAsync(this, withRefreshToken: true);
 var refreshToken = user.RefreshToken;
 ```
 
 You should store that token in a safe place. The next time, instead of asking the user to log in you will be able to use the following code to get the `id_token`:
+
 ```csharp
 var refreshToken = // retrieve from safe place
 var result = await auth0.RefreshToken(refreshToken);
