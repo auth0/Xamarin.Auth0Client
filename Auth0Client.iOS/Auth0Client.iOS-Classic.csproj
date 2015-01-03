@@ -9,6 +9,8 @@
     <RootNamespace>Auth0.SDK</RootNamespace>
     <IPhoneResourcePrefix>Resources</IPhoneResourcePrefix>
     <AssemblyName>Auth0Client.iOS</AssemblyName>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -34,10 +36,10 @@
     <Reference Include="System.Core" />
     <Reference Include="monotouch" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\samples\Components\json.net-4.5.11.1\lib\ios\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\Components\json.net-4.5.11.1\lib\ios\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Xamarin.Auth.iOS">
-      <HintPath>..\samples\Components\xamarin.auth-1.2.3\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
+      <HintPath>..\Components\xamarin.auth-1.2.3\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -62,12 +64,12 @@
     <Compile Include="DeviceIdProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="xamarin.auth">
-      <Version>1.2.3</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="json.net">
       <Version>4.5.11.1</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="xamarin.auth">
+      <Version>1.2.3</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
