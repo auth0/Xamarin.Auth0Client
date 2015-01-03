@@ -1,6 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+
+#if __UNIFIED__
+using UIKit;
+#else
 using MonoTouch.UIKit;
+#endif
 
 namespace Auth0.SDK
 {

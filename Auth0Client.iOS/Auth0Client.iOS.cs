@@ -1,9 +1,14 @@
 using System;
 using System.Drawing;
 using System.Threading.Tasks;
-using MonoTouch.UIKit;
 using Newtonsoft.Json.Linq;
 using Xamarin.Auth;
+
+#if __UNIFIED__
+using UIKit;
+#else
+using MonoTouch.UIKit;
+#endif
 
 namespace Auth0.SDK
 {
