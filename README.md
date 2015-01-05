@@ -30,7 +30,7 @@ mono xamarin-component.exe create-manually Auth0Client-X.Y.xam \
   --library="android":"Auth0Client.Android/bin/Release/Newtonsoft.Json.dll" \
   --sample="iOS Sample (Classic). Demonstrates Auth0 authentication on iOS (Classic).":"samples/Auth0Client.iOS.Sample-Classic.sln" \
   --sample="iOS Sample (Unified API). Demonstrates Auth0 authentication on iOS (Unified API).":"samples/Auth0Client.iOS.Sample.sln" \
-  --sample="Android Sample. Demonstrates Auth0 authentication on Android":"samples/Auth0Client.Android.Sample.sln"
+  --sample="Android Sample. Demonstrates Auth0 authentication on Android.":"samples/Auth0Client.Android.Sample.sln"
 ```
 
 > For detailed instructions, see the [component packaging guidelines](https://components.xamarin.com/guidelines).
