@@ -1,10 +1,15 @@
 using System;
-using CoreGraphics;
 using System.Threading.Tasks;
 using Auth0.SDK;
 using MonoTouch.Dialog;
+
+#if __UNIFIED__
 using Foundation;
 using UIKit;
+#else
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
 
 namespace Auth0Client.iOS.Sample
 {

@@ -5,11 +5,16 @@
 // Manual changes to this file may not be handled correctly.
 //
 using System;
-using CoreGraphics;
 using Auth0.SDK;
 using MonoTouch.Dialog;
+
+#if __UNIFIED__
 using Foundation;
 using UIKit;
+#else
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
 
 namespace Auth0Client.iOS.Sample
 {

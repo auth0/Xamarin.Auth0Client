@@ -1,10 +1,14 @@
 using System;
-using CoreGraphics;
+using System.Drawing;
 
 #if __UNIFIED__
 using UIKit;
+
+using RectangleF = global::CoreGraphics.CGRect;
 #else
-using UIKit;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+
 using nfloat = global::System.Single;
 #endif
 
@@ -15,7 +19,7 @@ namespace Auth0Client.iOS.Sample
 		UIActivityIndicatorView activitySpinner;
 		UILabel loadingLabel;
 
-		public LoadingOverlay (CGRect frame) : base (frame)
+		public LoadingOverlay (RectangleF frame) : base (frame)
 		{
 			// configurable bits
 			BackgroundColor = UIColor.Black;
@@ -31,7 +35,7 @@ namespace Auth0Client.iOS.Sample
 
 			// create the activity spinner, center it horizontall and put it 5 points above center x
 			activitySpinner = new UIActivityIndicatorView(UIActivityIndicatorViewStyle.WhiteLarge);
-			activitySpinner.Frame = new CGRect (
+			activitySpinner.Frame = new RectangleF (
 				centerX - (activitySpinner.Frame.Width / 2) ,
 				centerY - activitySpinner.Frame.Height - 20 ,
 				activitySpinner.Frame.Width ,
@@ -41,7 +45,7 @@ namespace Auth0Client.iOS.Sample
 			activitySpinner.StartAnimating ();
 
 			// create and configure the "Loading Data" label
-			loadingLabel = new UILabel(new CGRect (
+			loadingLabel = new UILabel(new RectangleF (
 				centerX - (labelWidth / 2),
 				centerY + 20 ,
 				labelWidth ,
