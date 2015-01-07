@@ -1,9 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client.iOS", "..\Auth0Client.iOS\Auth0Client.iOS-Classic.csproj", "{6D7BCBB4-FA0D-44E6-BFA3-89D166F4DDCB}"
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client.iOS", "src\Auth0Client.iOS\Auth0Client.iOS-Classic.csproj", "{6D7BCBB4-FA0D-44E6-BFA3-89D166F4DDCB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client.iOS.Sample", "Auth0Client.iOS.Sample\Auth0Client.iOS.Sample-Classic.csproj", "{AEABCA29-E9F7-4C17-B25F-3C207827C143}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Auth0Client.iOS.Sample", "samples\Auth0Client.iOS.Sample\Auth0Client.iOS.Sample-Classic.csproj", "{AEABCA29-E9F7-4C17-B25F-3C207827C143}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,6 +53,6 @@ Global
 		{AEABCA29-E9F7-4C17-B25F-3C207827C143}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Auth0Client.iOS.Sample\Auth0Client.iOS.Sample-Classic.csproj
+		StartupItem = samples\Auth0Client.iOS.Sample\Auth0Client.iOS.Sample-Classic.csproj
 	EndGlobalSection
 EndGlobal

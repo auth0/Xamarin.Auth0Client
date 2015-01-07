@@ -43,7 +43,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\Components\json.net-4.5.11.1\lib\android\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\Components\json.net-4.5.11.1\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -69,7 +69,7 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Auth0Client.Android\Auth0Client.Android.csproj">
+    <ProjectReference Include="..\..\src\Auth0Client.Android\Auth0Client.Android.csproj">
       <Project>{81864EA2-C020-4B1F-82E5-0634DD071084}</Project>
       <Name>Auth0Client.Android</Name>
     </ProjectReference>
