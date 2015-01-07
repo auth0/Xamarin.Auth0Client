@@ -36,7 +36,7 @@ mono xamarin-component.exe create-manually Auth0Client-X.Y.xam \
 > For detailed instructions, see the [component packaging guidelines](https://components.xamarin.com/guidelines).
 
 * This will create a component package named __Auth0Client-X.Y.xam__, which will include libraries and samples for iOS and Android, along with the required supplementary files.
-* You are ready to upload the new `Auth0Client-0.X.xam` package to https://components.xamarin.com/admin/new/877
+* You are ready to upload the new `Auth0Client-X.Y.xam` package to https://components.xamarin.com/admin/new/877
 
 ## Issue Reporting
 
