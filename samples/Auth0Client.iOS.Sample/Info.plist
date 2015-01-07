@@ -10,5 +10,7 @@
 	</array>
 	<key>MinimumOSVersion</key>
 	<string>6.0</string>
+	<key>CFBundleIdentifier</key>
+	<string>Auth0Client.iOS.Sample</string>
 </dict>
 </plist>
