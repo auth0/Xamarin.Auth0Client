@@ -40,7 +40,7 @@
     <Reference Include="System.Core" />
     <Reference Include="Mono.Android" />
     <Reference Include="Xamarin.Auth.Android">
-      <HintPath>..\..\Components\xamarin.auth-1.2.3\lib\android\Xamarin.Auth.Android.dll</HintPath>
+      <HintPath>..\..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\Components\json.net-4.5.11.1\lib\android\Newtonsoft.Json.dll</HintPath>
@@ -76,7 +76,7 @@
       <Visible>False</Visible>
     </XamarinComponentReference>
     <XamarinComponentReference Include="xamarin.auth">
-      <Version>1.2.3</Version>
+      <Version>1.2.3.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
   </ItemGroup>
