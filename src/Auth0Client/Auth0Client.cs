@@ -15,15 +15,15 @@ namespace Auth0.SDK
 	/// </summary>
 	public partial class Auth0Client
 	{
-		private const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&redirect_uri={2}&response_type=token&connection={3}&scope={4}";
-		private const string LoginWidgetUrl = "https://{0}/login?client={1}&redirect_uri={2}&response_type=token&scope={3}";
-		private const string ResourceOwnerEndpoint = "https://{0}/oauth/ro";
-		private const string DelegationEndpoint = "https://{0}/delegation";
-		private const string UserInfoEndpoint = "https://{0}/userinfo?access_token={1}";
-		private const string DefaultCallback = "https://{0}/mobile";
+        protected const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&redirect_uri={2}&response_type=token&connection={3}&scope={4}";
+        protected const string LoginWidgetUrl = "https://{0}/login?client={1}&redirect_uri={2}&response_type=token&scope={3}";
+        protected const string ResourceOwnerEndpoint = "https://{0}/oauth/ro";
+        protected const string DelegationEndpoint = "https://{0}/delegation";
+        protected const string UserInfoEndpoint = "https://{0}/userinfo?access_token={1}";
+        protected const string DefaultCallback = "https://{0}/mobile";
 
-		private readonly string domain;
-		private readonly string clientId;
+        protected readonly string domain;
+        protected readonly string clientId;
 
 		public Auth0Client (string domain, string clientId)
 		{
@@ -303,7 +303,7 @@ namespace Auth0.SDK
 				.Any(e => e.Equals("offline_access", StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		private void SetupCurrentUser(IDictionary<string, string> accountProperties)
+		protected void SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
 			var endpoint = string.Format(UserInfoEndpoint, this.domain, accountProperties["access_token"]);
 
