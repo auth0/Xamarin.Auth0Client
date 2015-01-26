@@ -25,7 +25,7 @@ namespace Auth0.SDK
 			this.DeviceIdProvider = new DeviceIdProvider();
 		}
 
-		public Auth0User CurrentUser { get; set; }
+		public Auth0User CurrentUser { get; protected set; }
 
 		/// <summary>
 		/// The component used to generate the device's unique id
