@@ -15,24 +15,17 @@ namespace Auth0.SDK
 	/// </summary>
 	public partial class Auth0Client
 	{
-		private const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&redirect_uri={2}&response_type=token&connection={3}&scope={4}";
-		private const string LoginWidgetUrl = "https://{0}/login?client={1}&redirect_uri={2}&response_type=token&scope={3}";
-		private const string ResourceOwnerEndpoint = "https://{0}/oauth/ro";
-		private const string DelegationEndpoint = "https://{0}/delegation";
-		private const string UserInfoEndpoint = "https://{0}/userinfo?access_token={1}";
-		private const string DefaultCallback = "https://{0}/mobile";
-
-		private readonly string domain;
-		private readonly string clientId;
+		protected string Domain { get; set; }
+		protected string ClientId { get; set; }
 
 		public Auth0Client (string domain, string clientId)
 		{
-			this.domain = domain;
-			this.clientId = clientId;
+			this.Domain = domain;
+			this.ClientId = clientId;
 			this.DeviceIdProvider = new DeviceIdProvider();
 		}
 
-		public Auth0User CurrentUser { get; private set; }
+		public Auth0User CurrentUser { get; protected set; }
 
 		/// <summary>
 		/// The component used to generate the device's unique id
@@ -43,7 +36,7 @@ namespace Auth0.SDK
 		{
 			get
 			{
-				return string.Format (DefaultCallback, this.domain);
+                return string.Format(Auth0Constants.DefaultCallback, this.Domain);
 			}
 		}
 
@@ -61,10 +54,10 @@ namespace Auth0.SDK
 			string scope = "openid")
 		{
 
-			var endpoint = string.Format (ResourceOwnerEndpoint, this.domain);
+            var endpoint = string.Format(Auth0Constants.ResourceOwnerEndpoint, this.Domain);
 			var parameters = new Dictionary<string, string> 
 			{
-				{ "client_id", this.clientId },
+				{ "client_id", this.ClientId },
 				{ "connection", connection },
 				{ "username", userName },
 				{ "password", password },
@@ -206,9 +199,9 @@ namespace Auth0.SDK
 			options["refresh_token"] = refreshToken;
 			options["target"] = targetClientId;
 			options["grant_type"] = "urn:ietf:params:oauth:grant-type:jwt-bearer";
-			options ["client_id"] = this.clientId;
+			options ["client_id"] = this.ClientId;
 
-			var endpoint = string.Format(DelegationEndpoint, this.domain);
+            var endpoint = string.Format(Auth0Constants.DelegationEndpoint, this.Domain);
 
 			options = options
 				.Where (kvp => !string.IsNullOrEmpty (kvp.Value))
@@ -267,8 +260,8 @@ namespace Auth0.SDK
 
 			var redirectUri = this.CallbackUrl;
 			var authorizeUri = !string.IsNullOrWhiteSpace (connection) ?
-				string.Format(AuthorizeUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), connection, scope) :
-				string.Format(LoginWidgetUrl, this.domain, this.clientId, Uri.EscapeDataString(redirectUri), scope);
+                string.Format(Auth0Constants.AuthorizeUrl, this.Domain, this.ClientId, Uri.EscapeDataString(redirectUri), connection, scope) :
+                string.Format(Auth0Constants.LoginWidgetUrl, this.Domain, this.ClientId, Uri.EscapeDataString(redirectUri), scope);
 
 			if (ScopeHasOfflineAccess("offline_access"))
 			{
@@ -303,9 +296,9 @@ namespace Auth0.SDK
 				.Any(e => e.Equals("offline_access", StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		private void SetupCurrentUser(IDictionary<string, string> accountProperties)
+		protected void SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
-			var endpoint = string.Format(UserInfoEndpoint, this.domain, accountProperties["access_token"]);
+            var endpoint = string.Format(Auth0Constants.UserInfoEndpoint, this.Domain, accountProperties["access_token"]);
 
 			var request = new Request ("GET", new Uri(endpoint));
 			request.GetResponseAsync ().ContinueWith (t => 
