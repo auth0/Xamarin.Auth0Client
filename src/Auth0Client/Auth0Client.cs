@@ -55,6 +55,7 @@ namespace Auth0.SDK
 		{
 
             var endpoint = string.Format(Auth0Constants.ResourceOwnerEndpoint, this.Domain);
+			var scopeParameter = IncreaseScopeWithOfflineAccess (withRefreshToken, scope);
 			var parameters = new Dictionary<string, string> 
 			{
 				{ "client_id", this.ClientId },
@@ -62,9 +63,14 @@ namespace Auth0.SDK
 				{ "username", userName },
 				{ "password", password },
 				{ "grant_type", "password" },
-				{ "scope",  IncreaseScopeWithOfflineAccess(withRefreshToken, scope) }
+				{ "scope",  scopeParameter }
 			};
 
+			if (ScopeHasOfflineAccess (scopeParameter)) {
+				var deviceId = this.DeviceIdProvider.GetDeviceId ().Result;
+				parameters ["device"] = deviceId;
+			}
+				
 			var request = new Request ("POST", new Uri(endpoint), parameters);
 			return request.GetResponseAsync ().ContinueWith<Auth0User>(t => 
 			{
