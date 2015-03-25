@@ -15,7 +15,7 @@ mono xamarin-component.exe create-manually Auth0Client-X.Y.Z.xam \
   --publisher="Auth0" \
   --website="http://auth0.com" \
   --details="Details.md" \
-  --license="License.md" \
+  --license="LICENSE" \
   --getting-started="GettingStarted.md" \
   --icon="icons/Auth0Client_128x128.png" \
   --icon="icons/Auth0Client_512x512.png" \
