@@ -44,7 +44,7 @@
       <HintPath>..\..\Components\xamarin.auth-1.2.3.1\lib\ios\Xamarin.Auth.iOS.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\Components\json.net-4.5.11.1\lib\ios\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\packages\Newtonsoft.Json.6.0.8\lib\portable-net40+sl5+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -71,13 +71,12 @@
     <Compile Include="DeviceIdProvider.cs" />
   </ItemGroup>
   <ItemGroup>
-    <XamarinComponentReference Include="json.net">
-      <Version>4.5.11.1</Version>
-      <Visible>False</Visible>
-    </XamarinComponentReference>
     <XamarinComponentReference Include="xamarin.auth">
       <Version>1.2.3.1</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
