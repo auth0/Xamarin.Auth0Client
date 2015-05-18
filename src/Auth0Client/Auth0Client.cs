@@ -101,6 +101,65 @@ namespace Auth0.SDK
 			});
 		}
 
+		public Task<Auth0User> LoginSocialAsync(string connection, 
+			string accessToken, 
+			string accessTokenSecret = null, 
+			string socialUserId = null,
+			bool withRefreshToken = false,
+			string scope = "openid")
+		{
+			var endpoint = string.Format(Auth0Constants.AccessTokenEndpoint, this.Domain);
+			var scopeParameter = IncreaseScopeWithOfflineAccess (withRefreshToken, scope);
+			var parameters = new Dictionary<string, string> 
+			{
+				{ "client_id", this.ClientId },
+				{ "connection", connection },
+				{ "access_token", accessToken },
+				{ "scope",  scopeParameter }
+			};
+			if (ScopeHasOfflineAccess (scopeParameter)) {
+				var deviceId = this.DeviceIdProvider.GetDeviceId ().Result;
+				parameters ["device"] = deviceId;
+			}
+			if (accessTokenSecret =! null) 
+			{
+				parameters ["access_token_secret"] = accessTokenSecret;
+			}
+			if (socialUserId != null) 
+			{
+				parameters ["user_id"] = socialUserId;
+			}
+
+			var request = new Request ("POST", new Uri(endpoint), parameters);
+			return request.GetResponseAsync ().ContinueWith<Auth0User>(t => 
+				{
+					try
+					{
+						var text = t.Result.GetResponseText();
+						var data = JObject.Parse(text).ToObject<Dictionary<string, string>>();
+
+						if (data.ContainsKey ("error")) 
+						{
+							throw new AuthException ("Error authenticating: " + data["error"]);
+						} 
+						else if (data.ContainsKey ("access_token"))
+						{
+							this.SetupCurrentUser (data);
+						} 
+						else 
+						{
+							throw new AuthException ("Expected access_token in access token response, but did not receive one.");
+						}
+					}
+					catch (Exception ex)
+					{
+						throw ex;
+					}
+
+					return this.CurrentUser;
+				});
+		}
+
 		/// <summary>
 		/// Verifies if the jwt for the current user has expired.
 		/// </summary>
