@@ -101,6 +101,16 @@ namespace Auth0.SDK
 			});
 		}
 
+		/// <summary>
+		///  Log a user into an Auth0 application using a Social provider access token.
+		/// </summary>
+		/// <returns>Task that will complete when the user has finished authentication.</returns>
+		/// <param name="connection" type="string">The name of the social connection to use in Auth0. Connection defines an Identity Provider.</param>
+		/// <param name="accessToken" type="string">User's access token from the social provider.</param>
+		/// <param name="accessTokenSecret" type="string">User's access token secret, only required for Twitter login.</param>
+		/// <param name="socialUserId" type="string">User's user identifier in the social provider, only required for Twitter login.</param>
+		/// <param name="withRefreshToken" type="bool">If the login will also return a refresh token from Auth0.</param>
+		/// <param name="scope" type="string">Scope used for authentication against Auth0, by default is 'openid'.</param>
 		public Task<Auth0User> LoginSocialAsync(string connection, 
 			string accessToken, 
 			string accessTokenSecret = null, 
