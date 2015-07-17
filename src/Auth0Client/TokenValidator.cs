@@ -22,10 +22,12 @@ namespace Auth0.SDK
                 throw new ArgumentException("jwt is not well formed. Check http://jwt.io");
             }
 
-            var partialBody = parts[1];
-
-            // padding
-            partialBody = partialBody.PadRight(partialBody.Length + (4 - partialBody.Length % 4) % 4, '='); ;
+			var length = parts [1].Length;
+			// padding
+			var partialBody = parts [1]
+				.PadRight (length + (4 - length % 4) % 4, '=')
+				.Replace ('-', '+')
+				.Replace ('_', '/');
 
             var body = Convert.FromBase64String(partialBody);
             var obj = JObject.Parse(Encoding.UTF8.GetString(body, 0, body.Length));
