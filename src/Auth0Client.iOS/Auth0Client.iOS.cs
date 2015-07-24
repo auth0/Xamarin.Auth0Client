@@ -32,12 +32,15 @@ namespace Auth0.SDK
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
+		/// <param name="title" type="string">
+		/// Title displayed in the login screen, by default is null
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync(UIViewController viewController, string connection = "", bool withRefreshToken = false, string scope = "openid")
+		public Task<Auth0User> LoginAsync(UIViewController viewController, string connection = "", bool withRefreshToken = false, string scope = "openid", string title = null)
 		{
-			return this.SendLoginAsync(default(RectangleF), viewController, connection, withRefreshToken, scope);
+			return this.SendLoginAsync(default(RectangleF), viewController, connection, withRefreshToken, scope, title);
 		}
 
 		/// <summary>
@@ -61,13 +64,15 @@ namespace Auth0.SDK
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
+		/// <param name="title" type="string">
+		/// Title displayed in the login screen, by default is null
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-        public Task<Auth0User> LoginAsync(RectangleF rectangle, UIView view, string connection = "", bool withRefreshToken = false,
-			string scope = "openid")
+		public Task<Auth0User> LoginAsync(RectangleF rectangle, UIView view, string connection = "", bool withRefreshToken = false, string scope = "openid", string title = null)
 		{
-			return this.SendLoginAsync(rectangle, view, connection, withRefreshToken, scope);
+			return this.SendLoginAsync(rectangle, view, connection, withRefreshToken, scope, title);
 		}
 
 		/// <summary>
@@ -88,13 +93,15 @@ namespace Auth0.SDK
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
+		/// <param name="title" type="string">
+		/// Title displayed in the login screen, by default is null
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
-		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "" , bool withRefreshToken = false, 
-			string scope = "openid")
+		public Task<Auth0User> LoginAsync (UIBarButtonItem barButtonItem, string connection = "" , bool withRefreshToken = false, string scope = "openid", string title = null)
 		{
-			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, withRefreshToken, scope);
+			return this.SendLoginAsync(default(RectangleF), barButtonItem, connection, withRefreshToken, scope, title);
 		}
 
 		private async Task<Auth0User> SendLoginAsync(
@@ -102,13 +109,14 @@ namespace Auth0.SDK
 			object view, 
 			string connection,
 			bool withRefreshToken,
-			string scope)
+			string scope,
+			string title)
 		{
 			// Launch server side OAuth flow using the GET endpoint
             scope = IncreaseScopeWithOfflineAccess(withRefreshToken, scope);
 
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = await this.GetAuthenticator (connection, scope);
+			var auth = await this.GetAuthenticator (connection, scope, title);
 
 
 			UIViewController c = auth.GetUI();
