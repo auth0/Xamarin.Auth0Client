@@ -39,20 +39,22 @@ Global
 		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhone.Build.0 = Release|iPhone
 		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Ad-Hoc|iPhone.ActiveCfg = Ad-Hoc|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Ad-Hoc|iPhone.Build.0 = Ad-Hoc|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.AppStore|iPhone.ActiveCfg = AppStore|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.AppStore|iPhone.Build.0 = AppStore|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Debug|iPhone.ActiveCfg = Debug|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Debug|iPhone.Build.0 = Debug|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Debug|iPhoneSimulator.ActiveCfg = Debug|iPhoneSimulator
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Debug|iPhoneSimulator.Build.0 = Debug|iPhoneSimulator
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhone.ActiveCfg = Release|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhone.Build.0 = Release|iPhone
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
-		{AEABCA29-E9F7-4C17-B25F-3C207827C144}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = samples\Auth0Client.iOS.Sample\Auth0Client.iOS.Sample.csproj
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.AfterDelegateDeclarationParameterComma = True
+		$2.inheritsSet = Mono
+		$2.inheritsScope = text/x-csharp
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 120
+		$3.TabsToSpaces = False
+		$3.inheritsSet = VisualStudio
+		$3.inheritsScope = text/plain
+		$3.scope = text/plain
 	EndGlobalSection
 EndGlobal

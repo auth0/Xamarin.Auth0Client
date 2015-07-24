@@ -255,7 +255,8 @@ namespace Auth0.SDK
 		/// <param name="connection">Connection name.</param>
 		/// <param name="scope">OpenID scope.</param>
 		/// <param name="deviceName">The device name to use if gettting a refresh token.</param>
-		protected virtual async Task<WebRedirectAuthenticator> GetAuthenticator(string connection, string scope)
+        /// <param name="title">Title displayed by WebRedirectAuthenticator, by default is empty.</param>
+        protected virtual async Task<WebRedirectAuthenticator> GetAuthenticator(string connection, string scope, string title = null)
 		{
 			// Generate state to include in startUri
 			var chars = new char[16];
@@ -281,7 +282,7 @@ namespace Auth0.SDK
 
 			var auth = new WebRedirectAuthenticator (startUri, endUri);
 			auth.ClearCookiesBeforeLogin = false;
-
+            auth.Title = title;
 			return auth;
 		}
 
