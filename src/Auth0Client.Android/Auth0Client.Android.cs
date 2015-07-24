@@ -21,6 +21,9 @@ namespace Auth0.SDK
 		/// <param name="scope" type="string">
 		/// Space delimited, case sensitive list of OAuth 2.0 scope values.
 		/// </param>
+		/// <param name="title" type="string">
+		/// Title displayed in the login screen, by default is null
+		/// </param>
 		/// <returns>
 		/// Task that will complete when the user has finished authentication.
 		/// </returns>
@@ -28,22 +31,24 @@ namespace Auth0.SDK
 			Context context, 
 			string connection = "", 
 			bool withRefreshToken = false, 
-			string scope = "openid")
+			string scope = "openid",
+			string title = null)
 		{
-			return this.SendLoginAsync(context, connection, withRefreshToken, scope);
+			return this.SendLoginAsync(context, connection, withRefreshToken, scope, title);
 		}
 
 		private async Task<Auth0User> SendLoginAsync(
 			Context context, 
 			string connection, 
 			bool withRefreshToken,
-			string scope)
+			string scope,
+			string title)
 		{
 			// Launch server side OAuth flow using the GET endpoint
 			scope = IncreaseScopeWithOfflineAccess(withRefreshToken, scope);
 
 			var tcs = new TaskCompletionSource<Auth0User> ();
-			var auth = await this.GetAuthenticator (connection, scope);
+			var auth = await this.GetAuthenticator (connection, scope, title);
 
 			auth.Error += (o, e) =>
 			{
