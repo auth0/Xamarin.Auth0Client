@@ -13,7 +13,7 @@ namespace Auth0.SDK
 	/// <summary>
 	/// All the constants used by the Auth0Client
 	/// </summary>
-	public class Auth0Constants
+	public static class Auth0Constants
 	{
         public const string AuthorizeUrl = "https://{0}/authorize?client_id={1}&redirect_uri={2}&response_type=token&connection={3}&scope={4}";
         public const string LoginWidgetUrl = "https://{0}/login?client={1}&redirect_uri={2}&response_type=token&scope={3}";
