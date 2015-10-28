@@ -72,10 +72,10 @@ namespace Auth0.SDK
 			}
 				
 			var request = new Request ("POST", new Uri(endpoint), parameters);
-			var response = await request.GetResponseAsync();
 
 			try
 			{
+				var response = await request.GetResponseAsync();
 				var text = response.GetResponseText();
 				var data = JObject.Parse(text).ToObject<Dictionary<string, string>>();
 
@@ -302,7 +302,7 @@ namespace Auth0.SDK
 				.Any(e => e.Equals("offline_access", StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		protected async void SetupCurrentUser(IDictionary<string, string> accountProperties)
+		protected async Task SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
             var endpoint = string.Format(Auth0Constants.UserInfoEndpoint, this.Domain, accountProperties["access_token"]);
 
