@@ -307,10 +307,10 @@ namespace Auth0.SDK
             var endpoint = string.Format(Auth0Constants.UserInfoEndpoint, this.Domain, accountProperties["access_token"]);
 
 			var request = new Request ("GET", new Uri(endpoint));
-			var response = await request.GetResponseAsync();
 
 			try
 			{
+				var response = await request.GetResponseAsync();
 				var text = response.GetResponseText();
 
 				if (response.StatusCode != System.Net.HttpStatusCode.OK)
