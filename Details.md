@@ -58,7 +58,7 @@ You can obtain a delegation token specifying the ID of the target client (`targe
 ```csharp
 var options = new Dictionary<string, string>
 {
-    { "scope", "openid profile" },      // default: openid
+    { "scope", "openid name email picture" },      // default: openid
 };
 
 var result = await auth0.GetDelegationToken(
@@ -76,7 +76,7 @@ If the id_token of the logged in user has not expired (["exp" claim](http://self
 ```csharp
 var options = new Dictionary<string, string>
 {
-    { "scope", "openid profile" }, // default: passthrough i.e. same as previous time token was asked for
+    { "scope", "openid name email picture" }, // default: passthrough i.e. same as previous time token was asked for
 };
 
 auth0.RenewIdToken(options: options);
