@@ -1,4 +1,11 @@
 # Xamarin.Auth0Client
+
+## Deprecation Notice
+
+This library has been deprecated. To use Auth0 in your Xamarin app, please see the [Xamarin Quickstart](https://auth0.com/docs/quickstart/native/xamarin), and also the new [Auth0 OIDC Client](https://github.com/auth0/auth0-oidc-client-net) which supports both iOS and Android.
+
+## Overview
+
 A cross-platform API for authenticating users with the [Auth0 platform](http://auth0.com).
 * This component builds on top of the [Xamarin.Auth](https://github.com/xamarin/Xamarin.Auth) framework.
 * Please read [Getting Started](https://github.com/auth0/Xamarin.Auth0Client/blob/master/GettingStarted.md) to learn how to use the library.
