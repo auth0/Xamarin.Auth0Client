@@ -47,7 +47,7 @@ namespace Auth0.SDK
 		/// <param name="connection" type="string">The name of the connection to use in Auth0. Connection defines an Identity Provider.</param>
 		/// <param name="userName" type="string">User name.</param>
 		/// <param name="password type="string"">User password.</param>
-		public Task<Auth0User> LoginAsync(string connection, 
+		public async Task<Auth0User> LoginAsync(string connection, 
 			string userName, 
 			string password, 
 			bool withRefreshToken = false,
@@ -72,33 +72,32 @@ namespace Auth0.SDK
 			}
 				
 			var request = new Request ("POST", new Uri(endpoint), parameters);
-			return request.GetResponseAsync ().ContinueWith<Auth0User>(t => 
+
+			try
 			{
-				try
-				{
-					var text = t.Result.GetResponseText();
-					var data = JObject.Parse(text).ToObject<Dictionary<string, string>>();
+				var response = await request.GetResponseAsync();
+				var text = response.GetResponseText();
+				var data = JObject.Parse(text).ToObject<Dictionary<string, string>>();
 
-					if (data.ContainsKey ("error")) 
-					{
-						throw new AuthException ("Error authenticating: " + data["error"]);
-					} 
-					else if (data.ContainsKey ("access_token"))
-					{
-						this.SetupCurrentUser (data);
-					} 
-					else 
-					{
-						throw new AuthException ("Expected access_token in access token response, but did not receive one.");
-					}
-				}
-				catch (Exception ex)
+				if (data.ContainsKey ("error")) 
 				{
-					throw ex;
+					throw new AuthException ("Error authenticating: " + data["error"]);
+				} 
+				else if (data.ContainsKey ("access_token"))
+				{
+					this.SetupCurrentUser (data);
+				} 
+				else 
+				{
+					throw new AuthException ("Expected access_token in access token response, but did not receive one.");
 				}
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
 
-				return this.CurrentUser;
-			});
+			return this.CurrentUser;
 		}
 
 		/// <summary>
@@ -303,32 +302,31 @@ namespace Auth0.SDK
 				.Any(e => e.Equals("offline_access", StringComparison.InvariantCultureIgnoreCase));
 		}
 
-		protected void SetupCurrentUser(IDictionary<string, string> accountProperties)
+		protected async Task SetupCurrentUser(IDictionary<string, string> accountProperties)
 		{
             var endpoint = string.Format(Auth0Constants.UserInfoEndpoint, this.Domain, accountProperties["access_token"]);
 
 			var request = new Request ("GET", new Uri(endpoint));
-			request.GetResponseAsync ().ContinueWith (t => 
-			{
-					try
-					{
-						var text = t.Result.GetResponseText();
 
-						if (t.Result.StatusCode != System.Net.HttpStatusCode.OK)
-						{
-							throw new InvalidOperationException(text);
-						}
-						accountProperties.Add("profile", text);
-					}
-					catch (Exception ex)
-					{
-						throw ex;
-					}
-					finally
-					{
-						this.CurrentUser = new Auth0User(accountProperties);
-					}
-				}).Wait();
+			try
+			{
+				var response = await request.GetResponseAsync();
+				var text = response.GetResponseText();
+
+				if (response.StatusCode != System.Net.HttpStatusCode.OK)
+				{
+					throw new InvalidOperationException(text);
+				}
+				accountProperties.Add("profile", text);
+			}
+			catch (Exception ex)
+			{
+				throw ex;
+			}
+			finally
+			{
+				this.CurrentUser = new Auth0User(accountProperties);
+			}
 		}
 	}
 }
